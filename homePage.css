@@ -1,0 +1,57 @@
+ * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .background {
+      background-image: url('./fontImg1.jpg'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+      max-width: 90%;
+      padding: 0 20px;
+    }
+
+    .overlay h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    .overlay p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+
+    .overlay .cta-button {
+       background: linear-gradient(to right, #27a147c5, #094d20d3);
+      color: rgb(255, 255, 255);
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.9s ease-in-out;
+    }
+
+    .overlay .cta-button:hover {
+      background: linear-gradient(to right, #094d20d3, #27a147c5);
+    }
