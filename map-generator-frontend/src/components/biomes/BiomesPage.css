@@ -143,3 +143,20 @@
 .biomes-background::before {
   transition: background-color 0.4s ease;
 }
+
+.page-fade-in {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.7s ease-in-out;
+}
+
+.page-fade-in.hidden {
+  opacity: 0;
+}
