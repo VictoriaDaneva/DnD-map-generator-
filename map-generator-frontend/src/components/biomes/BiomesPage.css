@@ -127,3 +127,19 @@
 .tundra-btn:hover {
   background-color: #38678ecb;
 }
+
+.bg-grassland::before {
+  background-color: rgba(37, 101, 37, 0.39); 
+}
+
+.bg-desert::before {
+  background-color: rgba(255, 214, 51, 0.331); 
+}
+
+.bg-tundra::before {
+  background-color: rgba(70, 131, 180, 0.45); 
+}
+
+.biomes-background::before {
+  transition: background-color 0.4s ease;
+}
