@@ -1,18 +1,8 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body, html {
-  height: 100%;
-  font-family: Arial, sans-serif;
-}
-
-.background {
+.biomes-background {
   position: relative;
   height: 100vh;
-  background-image: url('./fontImg1.jpg');
+  background-image: url('../../assets/fontImg1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,7 +11,7 @@ body, html {
   justify-content: center;
 }
 
-.background::before {
+.biomes-background::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -29,7 +19,7 @@ body, html {
   z-index: 1;
 }
 
-.overlay {
+.biomes-overlay {
   position: relative;
   z-index: 2;
   text-align: center;
@@ -38,12 +28,12 @@ body, html {
 }
 
 
-.overlay h1 {
+.biomes-overlay h1 {
   font-size: 2.5rem;
   margin-bottom: 60px;
 }
 
-.biom-grid {
+.biomes-grid {
   display: flex;
   justify-content: center;
   gap: 50px;
@@ -51,7 +41,7 @@ body, html {
   padding: 0 20px;
 }
 
-.biom-card {
+.biome-card {
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   overflow: hidden;
@@ -63,26 +53,26 @@ body, html {
   transition: transform 0.3s;
 }
 
-.biom-card:hover {
+.biome-card:hover {
   transform: scale(1.12);
 }
 
-.biom-image {
+.biome-image {
   width: 100%;
   height: 230px;
   object-fit: cover;
 }
 
-.biom-details {
+.biome-details {
   padding: 15px;
 }
 
-.biom-name {
+.biome-name {
   font-size: 1.3rem;
   margin-bottom: 10px;
 }
 
-.biom-description {
+.biome-description {
   font-size: 0.85rem; 
   font-weight: normal; 
   margin-bottom: 12px;
@@ -91,7 +81,7 @@ body, html {
   word-wrap: break-word; 
 }
 
-.selectBiom-button {
+.selectBiome-button {
   color: rgb(255, 255, 255);
   border: none;
   padding: 10px 20px;

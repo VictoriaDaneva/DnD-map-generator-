@@ -1,16 +1,6 @@
- * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
 
-    body, html {
-      height: 100%;
-      font-family: Arial, sans-serif;
-    }
-
-    .background {
-      background-image: url('./fontImg1.jpg'); 
+    .background-home {
+      background-image: url('../../assets/fontImg1.jpg'); 
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -21,7 +11,7 @@
       position: relative;
     }
 
-    .overlay {
+    .home-overlay {
       position: absolute;
       text-align: center;
       color: white;
@@ -30,18 +20,18 @@
       padding: 0 20px;
     }
 
-    .overlay h1 {
+    .home-overlay h1 {
       font-size: 3rem;
       font-weight: bold;
       line-height: 1.2;
     }
 
-    .overlay p {
+    .home-overlay p {
       font-size: 1.2rem;
       margin: 20px 0;
     }
 
-    .overlay .cta-button {
+    .home-overlay .home-cta-button {
        background: linear-gradient(to right, #27a147c5, #094d20d3);
       color: rgb(255, 255, 255);
       padding: 15px 30px;
@@ -52,6 +42,6 @@
       transition: 0.9s ease-in-out;
     }
 
-    .overlay .cta-button:hover {
+    .home-overlay .home-cta-button:hover {
       background: linear-gradient(to right, #094d20d3, #27a147c5);
     }
