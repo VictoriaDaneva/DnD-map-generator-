@@ -163,21 +163,48 @@
 
 .biome-fullscreen-deco {
   position: fixed;
-  top: -100vh;
+  top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   object-fit: cover;
   z-index: 1.5;
-  opacity: 0;
-  animation: dropIn 0.6s forwards ease-out;
+  opacity: 1;
   pointer-events: none;
 }
 
-@keyframes dropIn {
+
+@keyframes dropInFromTop {
+  from {
+    top: -100vh;
+    opacity: 0;
+  }
   to {
     top: 0;
     opacity: 1;
   }
 }
 
+@keyframes dropInFromBottom {
+  from {
+    top: 100vh;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.deco-grassland, 
+.deco-tundra {
+  animation: dropInFromTop 0.9s forwards ease-out;
+  top: -100vh; /* start off-screen top */
+  opacity: 0;
+}
+
+.deco-desert {
+  animation: dropInFromBottom 0.9s forwards ease-out;
+  top: 100vh; /* start off-screen bottom */
+  opacity: 0;
+}
