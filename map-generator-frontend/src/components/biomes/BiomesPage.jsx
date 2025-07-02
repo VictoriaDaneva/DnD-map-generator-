@@ -17,6 +17,15 @@ export default function Biomes() {
         <div className="biomes-overlay">
           <h1>Select your biome:</h1>
           <div className="biomes-grid">
+            {hoveredBiome === "bg-grassland" && (
+  <img src="/green-vanes.png" className="biome-fullscreen-deco deco-grassland" alt="grassland-deco" />
+)}
+{hoveredBiome === "bg-desert" && (
+  <img src="/sand-lilies.png" className="biome-fullscreen-deco deco-desert" alt="desert-deco" />
+)}
+{hoveredBiome === "bg-tundra" && (
+  <img src="/tundra-flowers.png" className="biome-fullscreen-deco deco-tundra" alt="tundra-deco" />
+)}
             <article
               className="biome-card grassland"
               onMouseEnter={() => setHoveredBiome("bg-grassland")}
