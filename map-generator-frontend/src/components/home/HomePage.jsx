@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 export default function Home() {
@@ -8,10 +8,10 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    setIsFading(true); 
+    setIsFading(true);
     setTimeout(() => {
       navigate("/biomes");
-    }, 700); 
+    }, 700);
   };
 
   return (
@@ -19,7 +19,8 @@ export default function Home() {
       <div className="home-overlay">
         <h1>
           Welcome to DnD map generator.
-          <br />Perfect for Game Masters.
+          <br />
+          Perfect for Game Masters.
         </h1>
         <p>You can start your map by clicking the button below!</p>
         <button

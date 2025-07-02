@@ -1,6 +1,6 @@
 .background-home {
   position: relative;
-  background-image: url('../../assets/fontImg1.jpg');
+  background-image: url("../../assets/fontImg1.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -29,45 +29,45 @@
 .background-home.bg-tint::before {
   opacity: 1;
 }
-    .home-overlay {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      color: white;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-      max-width: 90%;
-      padding: 0 20px;
-    }
+.home-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  max-width: 90%;
+  padding: 0 20px;
+}
 
-    .home-overlay h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      line-height: 1.2;
-    }
+.home-overlay h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
 
-    .home-overlay p {
-      font-size: 1.2rem;
-      margin: 20px 0;
-    }
+.home-overlay p {
+  font-size: 1.2rem;
+  margin: 20px 0;
+}
 
-    .home-overlay .home-cta-button {
-       background: linear-gradient(to right, #27a147c5, #094d20d3);
-      color: rgb(255, 255, 255);
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: 0.9s ease-in-out;
-    }
+.home-overlay .home-cta-button {
+  background: linear-gradient(to right, #27a147c5, #094d20d3);
+  color: rgb(255, 255, 255);
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: 0.9s ease-in-out;
+}
 
-    .home-overlay .home-cta-button:hover {
-      background: linear-gradient(to right, #094d20d3, #27a147c5);
-    }
+.home-overlay .home-cta-button:hover {
+  background: linear-gradient(to right, #094d20d3, #27a147c5);
+}
 
-    .bg-background::before {
-    background-color: rgba(37, 101, 37, 0.39); 
-    }
+.bg-background::before {
+  background-color: rgba(37, 101, 37, 0.39);
+}
 .fade-overlay {
   position: fixed;
   top: 0;

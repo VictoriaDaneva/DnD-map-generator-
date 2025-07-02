@@ -7,7 +7,7 @@ export default function Biomes() {
   const [isEntering, setIsEntering] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsEntering(false), 30); 
+    const timer = setTimeout(() => setIsEntering(false), 30);
     return () => clearTimeout(timer);
   }, []);
 
@@ -18,14 +18,26 @@ export default function Biomes() {
           <h1>Select your biome:</h1>
           <div className="biomes-grid">
             {hoveredBiome === "bg-grassland" && (
-  <img src="/green-vanes.png" className="biome-fullscreen-deco deco-grassland" alt="grassland-deco" />
-)}
-{hoveredBiome === "bg-desert" && (
-  <img src="/sand-lilies.png" className="biome-fullscreen-deco deco-desert" alt="desert-deco" />
-)}
-{hoveredBiome === "bg-tundra" && (
-  <img src="/tundra-flowers.png" className="biome-fullscreen-deco deco-tundra" alt="tundra-deco" />
-)}
+              <img
+                src="/green-vanes.png"
+                className="biome-fullscreen-deco deco-grassland"
+                alt="grassland-deco"
+              />
+            )}
+            {hoveredBiome === "bg-desert" && (
+              <img
+                src="/sand-lilies.png"
+                className="biome-fullscreen-deco deco-desert"
+                alt="desert-deco"
+              />
+            )}
+            {hoveredBiome === "bg-tundra" && (
+              <img
+                src="/tundra-flowers.png"
+                className="biome-fullscreen-deco deco-tundra"
+                alt="tundra-deco"
+              />
+            )}
             <article
               className="biome-card grassland"
               onMouseEnter={() => setHoveredBiome("bg-grassland")}
@@ -35,9 +47,16 @@ export default function Biomes() {
               <div className="biome-details">
                 <h2 className="biome-name">Grassland</h2>
                 <p className="biome-description">
-                  An area where the vegetation is dominated by grasses and one of the largest biomes. However, sedge and rush can also be found along with variable proportions of legumes such as clover, and other herbs.
+                  An area where the vegetation is dominated by grasses and one
+                  of the largest biomes. However, sedge and rush can also be
+                  found along with variable proportions of legumes such as
+                  clover, and other herbs.
                 </p>
-                <button className="selectBiome-button grassland-btn">Select</button>
+                <Link to="/biomes/grassland">
+                  <button className="selectBiome-button grassland-btn">
+                    Select
+                  </button>
+                </Link>
               </div>
             </article>
 
@@ -50,9 +69,16 @@ export default function Biomes() {
               <div className="biome-details">
                 <h2 className="biome-name">Desert</h2>
                 <p className="biome-description">
-                  A landscape where little precipitation occurs and, consequently, living conditions create unique biomes and ecosystems. The lack of vegetation exposes the unprotected surface of the ground to denudation.
+                  A landscape where little precipitation occurs and,
+                  consequently, living conditions create unique biomes and
+                  ecosystems. The lack of vegetation exposes the unprotected
+                  surface of the ground to denudation.
                 </p>
-                <button className="selectBiome-button desert-btn">Select</button>
+                <Link to="/biomes/desert">
+                  <button className="selectBiome-button desert-btn">
+                    Select
+                  </button>
+                </Link>
               </div>
             </article>
 
@@ -65,9 +91,16 @@ export default function Biomes() {
               <div className="biome-details">
                 <h2 className="biome-name">Tundra</h2>
                 <p className="biome-description">
-                  A type of biome where tree growth is hindered by frigid temperatures and short growing seasons. Tundra vegetation is composed of dwarf shrubs, sedges, grasses, mosses, and lichens.
+                  A type of biome where tree growth is hindered by frigid
+                  temperatures and short growing seasons. Tundra vegetation is
+                  composed of dwarf shrubs, sedges, grasses, mosses, and
+                  lichens.
                 </p>
-                <button className="selectBiome-button tundra-btn">Select</button>
+                <Link to="/biomes/tundra">
+                  <button className="selectBiome-button tundra-btn">
+                    Select
+                  </button>
+                </Link>
               </div>
             </article>
           </div>

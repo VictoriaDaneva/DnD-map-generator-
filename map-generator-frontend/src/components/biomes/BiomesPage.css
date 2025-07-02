@@ -1,8 +1,7 @@
-
 .biomes-background {
   position: relative;
   height: 100vh;
-  background-image: url('../../assets/fontImg1.jpg');
+  background-image: url("../../assets/fontImg1.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -15,7 +14,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(255, 255, 255, 0.205); 
+  background-color: rgba(255, 255, 255, 0.205);
   z-index: 1;
 }
 
@@ -27,7 +26,6 @@
   width: 100%;
 }
 
-
 .biomes-overlay h1 {
   font-size: 2.5rem;
   margin-bottom: 60px;
@@ -37,7 +35,7 @@
   display: flex;
   justify-content: center;
   gap: 50px;
-  flex-wrap: nowrap; 
+  flex-wrap: nowrap;
   padding: 0 20px;
 }
 
@@ -73,12 +71,12 @@
 }
 
 .biome-description {
-  font-size: 0.85rem; 
-  font-weight: normal; 
+  font-size: 0.85rem;
+  font-weight: normal;
   margin-bottom: 12px;
   line-height: 1.3;
-  color: #f0f0f0; 
-  word-wrap: break-word; 
+  color: #f0f0f0;
+  word-wrap: break-word;
 }
 
 .selectBiome-button {
@@ -91,21 +89,20 @@
   transition: background-color 0.3s;
 }
 
-
 .grassland {
-  background-color: rgba(37, 101, 37, 0.826); 
+  background-color: rgba(37, 101, 37, 0.826);
 }
 
 .desert {
-  background-color: rgba(183, 133, 59, 0.7); 
+  background-color: rgba(183, 133, 59, 0.7);
 }
 
 .tundra {
-  background-color: rgba(70, 130, 180, 0.7); 
+  background-color: rgba(70, 130, 180, 0.7);
 }
 
 .grassland-btn {
-  background-color: #28a746b0; 
+  background-color: #28a746b0;
 }
 
 .grassland-btn:hover {
@@ -113,7 +110,7 @@
 }
 
 .desert-btn {
-  background-color: #ffd146c0; 
+  background-color: #ffd146c0;
 }
 
 .desert-btn:hover {
@@ -121,7 +118,7 @@
 }
 
 .tundra-btn {
-  background-color: #5a97c9d1; 
+  background-color: #5a97c9d1;
 }
 
 .tundra-btn:hover {
@@ -129,15 +126,15 @@
 }
 
 .bg-grassland::before {
-  background-color: rgba(37, 101, 37, 0.39); 
+  background-color: rgba(37, 101, 37, 0.39);
 }
 
 .bg-desert::before {
-  background-color: rgba(255, 222, 92, 0.368); 
+  background-color: rgba(255, 222, 92, 0.368);
 }
 
 .bg-tundra::before {
-  background-color: rgba(70, 131, 180, 0.45); 
+  background-color: rgba(70, 131, 180, 0.45);
 }
 
 .biomes-background::before {
@@ -173,7 +170,6 @@
   pointer-events: none;
 }
 
-
 @keyframes dropInFromTop {
   from {
     top: -100vh;
@@ -196,7 +192,7 @@
   }
 }
 
-.deco-grassland, 
+.deco-grassland,
 .deco-tundra {
   animation: dropInFromTop 0.9s forwards ease-out;
   top: -100vh; /* start off-screen top */
