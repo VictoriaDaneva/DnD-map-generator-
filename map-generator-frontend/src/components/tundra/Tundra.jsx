@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Tundra.css";
+import Sidebar from "../itemsSidebar/ItemsSidebar";
 
 export default function Tundra() {
   const [isEntering, setIsEntering] = useState(true);
@@ -10,7 +11,9 @@ export default function Tundra() {
   }, []);
   return (
     <>
-      <div className="background-tundra"></div>
+      <div className="background-tundra">
+        <Sidebar />
+      </div>
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </>
   );

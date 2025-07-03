@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Desert.css";
+import Sidebar from "../itemsSidebar/ItemsSidebar";
 
 export default function Desert() {
   const [isEntering, setIsEntering] = useState(true);
@@ -10,7 +11,9 @@ export default function Desert() {
   }, []);
   return (
     <>
-      <div className="background-desert"></div>
+      <div className="background-desert">
+        <Sidebar />
+      </div>
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Grassland.css";
+import Sidebar from "../itemsSidebar/ItemsSidebar";
 
 export default function Grassland() {
   const [isEntering, setIsEntering] = useState(true);
@@ -10,7 +11,9 @@ export default function Grassland() {
   }, []);
   return (
     <>
-      <div className="background-grassland"></div>
+      <div className="background-grassland">
+        <Sidebar />
+      </div>
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </>
   );
