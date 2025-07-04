@@ -9,12 +9,20 @@ export default function Sidebar() {
     { name: "table", src: "/table.png" },
     { name: "tent", src: "/tent.png" },
   ];
+  const handleDragStart = (e, item) => {
+    e.dataTransfer.setData("application/json", JSON.stringify(item));
+  };
   return (
     <div className="sidebar">
       <h2 className="sidebar-title">Items</h2>
       <ul className="draggable-items">
         {items.map((item, index) => (
-          <li key={index} className="draggable-item" draggable>
+          <li
+            key={index}
+            className="draggable-item"
+            onDragStart={(e) => handleDragStart(e, item)}
+            draggable
+          >
             <img src={item.src} alt={item.name} />
             <span>{item.name}</span>
           </li>
