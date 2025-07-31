@@ -1,12 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import "./Desert.css";
 import Sidebar from "../itemsSidebar/ItemsSidebar";
-
 export default function Desert() {
   const [isEntering, setIsEntering] = useState(true);
   const [placedItems, setPlacedItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [draggingRotation, setDraggingRotation] = useState(false);
   const [isDraggingItem, setIsDraggingItem] = useState(false);
   const [mouseDownPosition, setMouseDownPosition] = useState(null);
 
@@ -59,7 +57,7 @@ export default function Desert() {
     setSelectedItemId(null);
   };
 
-  // Drag & rotation logic
+  // Drag logic
   useEffect(() => {
     const handleMouseMove = (e) => {
       const item = placedItems.find((i) => i.id === selectedItemId);
@@ -67,17 +65,6 @@ export default function Desert() {
       if (!item || !container) return;
 
       const rect = container.getBoundingClientRect();
-
-      // Rotation logic
-      if (draggingRotation) {
-        const centerX = rect.left + item.x + item.size / 2;
-        const centerY = rect.top + item.y + item.size / 2;
-        const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-        const degrees = (angle * 180) / Math.PI;
-        setPlacedItems((prev) =>
-          prev.map((p) => (p.id === item.id ? { ...p, rotation: degrees } : p))
-        );
-      }
 
       // Start dragging only after slight mouse move
       if (mouseDownPosition && !isDraggingItem) {
@@ -100,7 +87,6 @@ export default function Desert() {
     };
 
     const handleMouseUp = () => {
-      setDraggingRotation(false);
       setIsDraggingItem(false);
       setMouseDownPosition(null);
     };
@@ -112,13 +98,7 @@ export default function Desert() {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [
-    draggingRotation,
-    isDraggingItem,
-    selectedItemId,
-    mouseDownPosition,
-    placedItems,
-  ]);
+  }, [isDraggingItem, selectedItemId, mouseDownPosition, placedItems]);
 
   return (
     <>
@@ -146,7 +126,6 @@ export default function Desert() {
               height: `${item.size}px`,
             }}
             onMouseDown={(e) => {
-              if (e.target.classList.contains("rotation-handle")) return;
               e.stopPropagation();
               setSelectedItemId(item.id);
               const rect = e.currentTarget.getBoundingClientRect();
@@ -169,41 +148,55 @@ export default function Desert() {
             />
 
             {selectedItemId === item.id && (
-              <>
-                <div
-                  className="rotation-handle"
-                  onMouseDown={(e) => {
-                    e.stopPropagation();
-                    setDraggingRotation(true);
-                  }}
-                />
-                <div className="controls">
-                  <button
-                    onClick={() =>
-                      updateItem(item.id, {
-                        size: Math.min(item.size + 10, 150),
-                      })
-                    }
-                  >
-                    ＋
-                  </button>
-                  <button
-                    onClick={() =>
-                      updateItem(item.id, {
-                        size: Math.max(item.size - 10, 30),
-                      })
-                    }
-                  >
-                    －
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => deleteItem(item.id)}
-                  >
-                    🗑️
-                  </button>
-                </div>
-              </>
+              <div className="controls">
+                <button
+                  onClick={() =>
+                    updateItem(item.id, {
+                      rotation: (item.rotation - 15 + 360) % 360,
+                    })
+                  }
+                  title="Rotate Left"
+                >
+                  ↺
+                </button>
+                <button
+                  onClick={() =>
+                    updateItem(item.id, {
+                      rotation: (item.rotation + 15) % 360,
+                    })
+                  }
+                  title="Rotate Right"
+                >
+                  ↻
+                </button>
+                <button
+                  onClick={() =>
+                    updateItem(item.id, {
+                      size: Math.min(item.size + 10, 150),
+                    })
+                  }
+                  title="Increase Size"
+                >
+                  ＋
+                </button>
+                <button
+                  onClick={() =>
+                    updateItem(item.id, {
+                      size: Math.max(item.size - 10, 30),
+                    })
+                  }
+                  title="Decrease Size"
+                >
+                  －
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => deleteItem(item.id)}
+                  title="Delete Item"
+                >
+                  🗑️
+                </button>
+              </div>
             )}
           </div>
         ))}
