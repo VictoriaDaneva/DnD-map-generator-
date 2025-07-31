@@ -1,50 +1,211 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./Desert.css";
 import Sidebar from "../itemsSidebar/ItemsSidebar";
 
 export default function Desert() {
   const [isEntering, setIsEntering] = useState(true);
   const [placedItems, setPlacedItems] = useState([]);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [draggingRotation, setDraggingRotation] = useState(false);
+  const [isDraggingItem, setIsDraggingItem] = useState(false);
+  const [mouseDownPosition, setMouseDownPosition] = useState(null);
 
+  const containerRef = useRef(null);
+  const dragOffset = useRef({ x: 0, y: 0 });
+
+  // Black fade-in effect
   useEffect(() => {
     const timer = setTimeout(() => setIsEntering(false), 50);
     return () => clearTimeout(timer);
   }, []);
 
+  const allowDrop = (e) => e.preventDefault();
+
   const handleDrop = (e) => {
     e.preventDefault();
-    const itemData = JSON.parse(e.dataTransfer.getData("application/json"));
+    const json = e.dataTransfer.getData("application/json");
+    const itemIndex = e.dataTransfer.getData("itemIndex");
+
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const newItem = {
-      ...itemData,
-      x,
-      y,
-      id: Date.now(),
-    };
-    setPlacedItems((prev) => [...prev, newItem]);
+    if (json) {
+      const itemData = JSON.parse(json);
+      const newItem = {
+        ...itemData,
+        x,
+        y,
+        id: Date.now(),
+        size: 60,
+        rotation: 0,
+      };
+      setPlacedItems((prev) => [...prev, newItem]);
+    } else if (itemIndex) {
+      setPlacedItems((prev) =>
+        prev.map((item, i) => (i == itemIndex ? { ...item, x, y } : item))
+      );
+    }
   };
 
-  const allowDrop = (e) => e.preventDefault();
+  const updateItem = (id, updates) => {
+    setPlacedItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
+    );
+  };
+
+  const deleteItem = (id) => {
+    setPlacedItems((prev) => prev.filter((item) => item.id !== id));
+    setSelectedItemId(null);
+  };
+
+  // Drag & rotation logic
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const item = placedItems.find((i) => i.id === selectedItemId);
+      const container = containerRef.current;
+      if (!item || !container) return;
+
+      const rect = container.getBoundingClientRect();
+
+      // Rotation logic
+      if (draggingRotation) {
+        const centerX = rect.left + item.x + item.size / 2;
+        const centerY = rect.top + item.y + item.size / 2;
+        const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+        const degrees = (angle * 180) / Math.PI;
+        setPlacedItems((prev) =>
+          prev.map((p) => (p.id === item.id ? { ...p, rotation: degrees } : p))
+        );
+      }
+
+      // Start dragging only after slight mouse move
+      if (mouseDownPosition && !isDraggingItem) {
+        const dx = Math.abs(e.clientX - mouseDownPosition.x);
+        const dy = Math.abs(e.clientY - mouseDownPosition.y);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > 4) {
+          setIsDraggingItem(true);
+        }
+      }
+
+      // Handle item drag movement
+      if (isDraggingItem) {
+        const newX = e.clientX - rect.left - dragOffset.current.x;
+        const newY = e.clientY - rect.top - dragOffset.current.y;
+        setPlacedItems((prev) =>
+          prev.map((p) => (p.id === item.id ? { ...p, x: newX, y: newY } : p))
+        );
+      }
+    };
+
+    const handleMouseUp = () => {
+      setDraggingRotation(false);
+      setIsDraggingItem(false);
+      setMouseDownPosition(null);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [
+    draggingRotation,
+    isDraggingItem,
+    selectedItemId,
+    mouseDownPosition,
+    placedItems,
+  ]);
 
   return (
     <>
       <div
+        ref={containerRef}
         className="background-desert"
         onDrop={handleDrop}
         onDragOver={allowDrop}
+        onMouseDown={(e) => {
+          // If clicked outside any control or item wrapper, deselect
+          if (!e.target.closest(".dropped-wrapper")) {
+            setSelectedItemId(null);
+          }
+        }}
       >
         <Sidebar />
         {placedItems.map((item) => (
-          <img
+          <div
             key={item.id}
-            src={item.src}
-            alt={item.name}
-            className="dropped-item"
-            style={{ left: item.x, top: item.y }}
-          />
+            className="dropped-wrapper"
+            style={{
+              left: item.x,
+              top: item.y,
+              width: `${item.size}px`,
+              height: `${item.size}px`,
+            }}
+            onMouseDown={(e) => {
+              if (e.target.classList.contains("rotation-handle")) return;
+              e.stopPropagation();
+              setSelectedItemId(item.id);
+              const rect = e.currentTarget.getBoundingClientRect();
+              dragOffset.current = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top,
+              };
+              setMouseDownPosition({ x: e.clientX, y: e.clientY });
+            }}
+          >
+            <img
+              src={item.src}
+              alt={item.name}
+              className="dropped-item"
+              style={{
+                width: "100%",
+                height: "100%",
+                transform: `rotate(${item.rotation || 0}deg)`,
+              }}
+            />
+
+            {selectedItemId === item.id && (
+              <>
+                <div
+                  className="rotation-handle"
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    setDraggingRotation(true);
+                  }}
+                />
+                <div className="controls">
+                  <button
+                    onClick={() =>
+                      updateItem(item.id, {
+                        size: Math.min(item.size + 10, 150),
+                      })
+                    }
+                  >
+                    ＋
+                  </button>
+                  <button
+                    onClick={() =>
+                      updateItem(item.id, {
+                        size: Math.max(item.size - 10, 30),
+                      })
+                    }
+                  >
+                    －
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => deleteItem(item.id)}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         ))}
       </div>
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
