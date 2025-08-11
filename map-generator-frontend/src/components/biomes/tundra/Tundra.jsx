@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import "./Grassland.css";
+import { useEffect, useState, useRef } from "react";
+import "./Tundra.css";
 import Sidebar from "../itemsSidebar/ItemsSidebar";
-import useDragAndDrop from "../../hooks/dragAndDrop";
+import useDragAndDrop from "../../../hooks/dragAndDrop";
 import {
   updateItem as update,
   deleteItem as remove,
-} from "../../utils/itemUtils";
+} from "../../../utils/itemUtils";
 import Item from "../item/Item";
 
-export default function Grassland() {
+export default function Tundra() {
   const [isEntering, setIsEntering] = useState(true);
   const [placedItems, setPlacedItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -65,12 +65,11 @@ export default function Grassland() {
     setPlacedItems((prev) => remove(prev, id));
     setSelectedItemId(null);
   };
-
   return (
     <>
       <div
         ref={containerRef}
-        className="background-grassland"
+        className="background-tundra"
         onDrop={handleDrop}
         onDragOver={allowDrop}
         onMouseDown={(e) => {
