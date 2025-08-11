@@ -48,6 +48,8 @@
 .home-overlay p {
   font-size: 1.2rem;
   margin: 20px 0;
+  color: black;
+  font-weight: 300;
 }
 
 .home-overlay .home-cta-button {

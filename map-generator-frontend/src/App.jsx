@@ -5,16 +5,20 @@ import Biomes from "./components/catalog/BiomesPage";
 import Grassland from "./components/biomes/grassland/Grassland";
 import Desert from "./components/biomes/desert/Desert";
 import Tundra from "./components/biomes/tundra/Tundra";
+import Navigation from "./components/navigation/Navigation";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/biomes" element={<Biomes />} />
-      <Route path="/biomes/grassland" element={<Grassland />} />
-      <Route path="/biomes/desert" element={<Desert />} />
-      <Route path="/biomes/tundra" element={<Tundra />} />
-    </Routes>
+    <>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/biomes" element={<Biomes />} />
+        <Route path="/biomes/grassland" element={<Grassland />} />
+        <Route path="/biomes/desert" element={<Desert />} />
+        <Route path="/biomes/tundra" element={<Tundra />} />
+      </Routes>
+    </>
   );
 }
 

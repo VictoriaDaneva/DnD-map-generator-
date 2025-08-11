@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./Grassland.css";
-import Sidebar from "../itemsSidebar/ItemsSidebar";
+import Sidebar from "../../itemsSidebar/ItemsSidebar";
 import useDragAndDrop from "../../../hooks/dragAndDrop";
 import {
   updateItem as update,
