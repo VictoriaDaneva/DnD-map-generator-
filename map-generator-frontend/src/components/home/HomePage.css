@@ -34,22 +34,22 @@
   z-index: 2;
   text-align: center;
   color: white;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   max-width: 90%;
   padding: 0 20px;
 }
 
 .home-overlay h1 {
   font-size: 3rem;
-  font-weight: bold;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  font-weight: 450;
   line-height: 1.2;
 }
 
 .home-overlay p {
   font-size: 1.2rem;
   margin: 20px 0;
-  color: black;
-  font-weight: 300;
+  color: rgb(1, 46, 0);
+  font-weight: 370;
 }
 
 .home-overlay .home-cta-button {
@@ -57,6 +57,7 @@
   color: rgb(255, 255, 255);
   padding: 15px 30px;
   font-size: 1.2rem;
+  font-weight: 300;
   border: none;
   border-radius: 40px;
   cursor: pointer;
@@ -70,6 +71,24 @@
 .bg-background::before {
   background-color: rgba(37, 101, 37, 0.39);
 }
+
+.page-fade-in {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.7s ease-in-out;
+}
+
+.page-fade-in.hidden {
+  opacity: 0;
+}
+
 .fade-overlay {
   position: fixed;
   top: 0;

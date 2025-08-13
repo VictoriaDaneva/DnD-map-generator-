@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 export default function Home() {
   const [hoveredSubmit, setHoveredSubmit] = useState(false);
+  const [isEntering, setIsEntering] = useState(true);
   const [isFading, setIsFading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsEntering(false), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleStart = () => {
     setIsFading(true);
@@ -18,9 +24,9 @@ export default function Home() {
     <div className={`background-home ${hoveredSubmit ? "bg-tint" : ""}`}>
       <div className="home-overlay">
         <h1>
-          Welcome to DnD map generator.
+          Welcome to DnD map generator
           <br />
-          Perfect for Game Masters.
+          Perfect for Game Masters
         </h1>
         <p>You can start your map by clicking the button below!</p>
         <button
@@ -32,7 +38,7 @@ export default function Home() {
           Start
         </button>
       </div>
-
+      <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
       <div className={`fade-overlay ${isFading ? "active" : ""}`}></div>
     </div>
   );
