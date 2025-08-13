@@ -1,0 +1,76 @@
+.background-login {
+  display: flex;
+  height: 100vh;
+}
+
+/* Left section - background image */
+.background-login::before {
+  content: "";
+  flex: 1;
+  background-image: url("/login.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Right section - form container */
+.login-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical center */
+  align-items: center; /* horizontal center */
+  padding: 40px;
+  background: linear-gradient(
+    135deg,
+    rgba(17, 17, 17, 0.9),
+    rgba(34, 34, 34, 0.9)
+  );
+  color: white;
+}
+
+/* Inside card styles */
+.login-card h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-form input {
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  font-size: 14px;
+}
+
+.loginButton {
+  background: #ff3b3b;
+  border: none;
+  padding: 12px;
+  border-radius: 30px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.loginButton:hover {
+  background: #ff5555;
+}
+
+.login-footer {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-link {
+  color: #ff3b3b;
+  text-decoration: none;
+}

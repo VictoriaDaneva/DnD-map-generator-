@@ -6,6 +6,7 @@ import Grassland from "./components/biomes/grassland/Grassland";
 import Desert from "./components/biomes/desert/Desert";
 import Tundra from "./components/biomes/tundra/Tundra";
 import Navigation from "./components/navigation/Navigation";
+import Login from "./components/user/login/Login";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/biomes" element={<Biomes />} />
         <Route path="/biomes/grassland" element={<Grassland />} />
         <Route path="/biomes/desert" element={<Desert />} />

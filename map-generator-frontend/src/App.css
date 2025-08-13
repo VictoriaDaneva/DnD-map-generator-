@@ -11,3 +11,7 @@ html {
   font-weight: 200;
   overflow-x: hidden;
 }
+:root {
+  --color-white: #ffffff;
+  --color-text: #333333;
+}
