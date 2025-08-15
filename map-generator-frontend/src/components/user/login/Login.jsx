@@ -4,6 +4,7 @@ import "./Login.css";
 export default function Login() {
   return (
     <div className="background-login">
+      <div className="left-panel"></div>
       <div className="login-card">
         <h2>Login</h2>
         <form className="login-form">
