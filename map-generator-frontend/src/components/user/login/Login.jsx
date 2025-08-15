@@ -1,7 +1,16 @@
 import { Link } from "react-router";
 import "./Login.css";
+import { useState, useEffect } from "react";
 
 export default function Login() {
+  const [isEntering, setIsEntering] = useState(true);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsEntering(false), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="background-login">
       <div className="left-panel"></div>
@@ -32,6 +41,7 @@ export default function Login() {
           </Link>
         </p>
       </div>
+      <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </div>
   );
 }
