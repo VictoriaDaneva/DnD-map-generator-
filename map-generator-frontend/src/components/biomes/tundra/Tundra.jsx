@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "./Tundra.css";
-import Sidebar from "../../itemsSidebar/ItemsSidebar";
+import Sidebar from "../itemsSidebar/ItemsSidebar";
 import useDragAndDrop from "../../../hooks/dragAndDrop";
 import {
   updateItem as update,
