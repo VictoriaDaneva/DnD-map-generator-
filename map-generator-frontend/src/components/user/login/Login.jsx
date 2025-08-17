@@ -36,7 +36,7 @@ export default function Login() {
         </form>
         <p className="login-footer">
           Need an account? Sign up{" "}
-          <Link to="/register" className="login-link">
+          <Link to="/register" className="register-link">
             here
           </Link>
         </p>

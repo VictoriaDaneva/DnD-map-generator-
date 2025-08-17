@@ -1,9 +1,9 @@
-.background-login {
+.background-register {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   height: 100vh;
 
-  background: url("/login2.jpg") center / cover no-repeat;
+  background: url("/register2.jpg") center / cover no-repeat;
 }
 
 .left-panel {
@@ -15,39 +15,39 @@
   inset: 0;
   background: linear-gradient(
       to right,
-      rgba(20, 28, 13, 0.75),
-      rgba(19, 28, 13, 0.2) 40%,
-      rgba(14, 28, 13, 0) 65%
+      rgba(13, 13, 28, 0.75),
+      rgba(14, 13, 28, 0.2) 40%,
+      rgba(18, 13, 28, 0) 65%
     ),
     linear-gradient(
       to bottom,
-      rgba(255, 220, 78, 0.25),
-      rgba(255, 214, 80, 0) 60%
+      rgba(134, 78, 255, 0.25),
+      rgba(182, 80, 255, 0) 60%
     );
   pointer-events: none;
 }
 
-.login-card {
+.register-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: linear-gradient(
     180deg,
-    rgba(48, 44, 23, 0.95),
-    rgba(53, 82, 24, 0.788)
+    rgba(23, 23, 48, 0.95),
+    rgba(54, 24, 82, 0.788)
   );
   padding: 32px;
   color: #fff;
 }
 
-.login-card h2 {
+.register-card h2 {
   margin-bottom: 24px;
   font-size: 28px;
   font-weight: 600;
 }
 
-.login-form {
+.register-form {
   width: 100%;
   max-width: 350px;
   display: flex;
@@ -55,9 +55,9 @@
   gap: 22px;
 }
 
-.login-input-container input {
+.register-input-container input {
   width: 100%;
-  padding: 14px 2px;
+  padding: 20px 10px;
   background: transparent;
   border: none;
   outline: none;
@@ -65,12 +65,12 @@
   font-size: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.28);
 }
-.login-input-container input::placeholder {
+.register-input-container input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.loginButton {
-  background: linear-gradient(90deg, #aaff34, #daff6a);
+.registerButton {
+  background: linear-gradient(90deg, #3434ff, #a86aff);
   color: white;
   font-weight: 600;
   padding: 12px 0;
@@ -78,22 +78,24 @@
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
-  box-shadow: 0 10px 20px rgba(124, 255, 58, 0.25);
+  box-shadow: 0 10px 20px rgba(87, 58, 255, 0.25);
 }
-.loginButton:hover {
+
+.registerButton:hover {
   transform: translateY(-1px);
 }
 
-.login-footer {
+.regsiter-footer {
   margin-top: 18px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.75);
 }
-.register-link {
-  color: #b0ff6a;
+.login-link {
+  color: #6a6dff;
   text-decoration: none;
 }
-.register-link:hover {
+
+.login-link:hover {
   text-decoration: underline;
 }
 
