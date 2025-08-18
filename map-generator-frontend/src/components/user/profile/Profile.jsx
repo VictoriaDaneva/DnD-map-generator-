@@ -1,7 +1,16 @@
 import { Link } from "react-router";
+import { useState, useEffect } from "react";
 import "./Profile.css";
 
 export default function Profile() {
+  const [isEntering, setIsEntering] = useState(true);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsEntering(false), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Static mock data (replace later with backend/user context)
   const userId = 1;
   const user = {
@@ -9,7 +18,7 @@ export default function Profile() {
     email: "jane.doe@example.com",
     phone: "+1 234 567 890",
     address: "123 Main Street, Springfield",
-    image: "https://i.pravatar.cc/200?img=32", // Random placeholder avatar
+    image: "https://i.pravatar.cc/200?img=32",
   };
 
   // Static example maps/pets
@@ -85,6 +94,7 @@ export default function Profile() {
             </div>
           </section>
         </div>
+        <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
       </div>
     </>
   );
