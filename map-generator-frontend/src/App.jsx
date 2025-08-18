@@ -8,6 +8,7 @@ import Tundra from "./components/biomes/tundra/Tundra";
 import Navigation from "./components/navigation/Navigation";
 import Login from "./components/user/login/Login";
 import Register from "./components/user/register/register";
+import Profile from "./components/user/profile/Profile";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/biomes" element={<Biomes />} />
         <Route path="/biomes/grassland" element={<Grassland />} />
         <Route path="/biomes/desert" element={<Desert />} />
