@@ -83,7 +83,7 @@ export default function PostsPage() {
 
       <div className="grid-posts-container">
         {filteredMaps.map((map) => (
-          <Link key={map.id} to={`/post/${map.id}`} className="card">
+          <Link key={map.id} to={`/post/nesh`} className="card">
             <img src={map.img} alt={map.title} />
             <div className="overlay">
               <h3>{map.title}</h3>

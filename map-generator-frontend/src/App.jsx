@@ -10,6 +10,7 @@ import Login from "./components/user/login/Login";
 import Register from "./components/user/register/register";
 import Profile from "./components/user/profile/Profile";
 import PostsPage from "./components/posts/PostsPage";
+import PostPage from "./components/postPage/PostPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/biomes" element={<Biomes />} />
         <Route path="/posts" element={<PostsPage />} />
+        <Route path="/post/nesh" element={<PostPage />} />
         <Route path="/biomes/grassland" element={<Grassland />} />
         <Route path="/biomes/desert" element={<Desert />} />
         <Route path="/biomes/tundra" element={<Tundra />} />
