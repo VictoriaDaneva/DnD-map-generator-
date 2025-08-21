@@ -9,6 +9,7 @@ import Navigation from "./components/navigation/Navigation";
 import Login from "./components/user/login/Login";
 import Register from "./components/user/register/register";
 import Profile from "./components/user/profile/Profile";
+import PostsPage from "./components/posts/PostsPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/biomes" element={<Biomes />} />
+        <Route path="/posts" element={<PostsPage />} />
         <Route path="/biomes/grassland" element={<Grassland />} />
         <Route path="/biomes/desert" element={<Desert />} />
         <Route path="/biomes/tundra" element={<Tundra />} />
