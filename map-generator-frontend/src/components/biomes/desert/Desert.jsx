@@ -7,11 +7,14 @@ import {
   deleteItem as remove,
 } from "../../../utils/itemUtils";
 import Item from "../item/Item";
+import SaveModal from "../savePage/SaveModal";
 
 export default function Desert() {
   const [isEntering, setIsEntering] = useState(true);
   const [placedItems, setPlacedItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const containerRef = useRef(null);
 
@@ -66,6 +69,13 @@ export default function Desert() {
     setSelectedItemId(null);
   };
 
+  const handleSave = (mapData) => {
+    console.log("Saving map with data:", mapData);
+    console.log("Placed items:", placedItems);
+
+    // send this to backend!!
+  };
+
   return (
     <>
       <div
@@ -91,6 +101,20 @@ export default function Desert() {
           />
         ))}
       </div>
+
+      <div className="save-btn-wrapper">
+        <button className="save-btn" onClick={() => setIsModalOpen(true)}>
+          Save
+        </button>
+      </div>
+
+      <SaveModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+        previewImage="/login.jpg"
+      />
+
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </>
   );

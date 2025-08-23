@@ -1,0 +1,114 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.modal-container {
+  background: #1a1c1fcc;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 1100px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-save-maps {
+  width: 450px;
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+.modal-wrapper {
+  display: flex;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.modal-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.modal-input,
+.modal-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  background: #2a2d31;
+  border: 1px solid #555;
+  color: white;
+}
+
+.modal-input:focus,
+.modal-textarea:focus {
+  outline: none;
+  border-color: #888;
+}
+
+.modal-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.modal-preview {
+  margin-bottom: 16px;
+}
+
+.modal-preview-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.modal-preview-img {
+  max-height: 300px;
+  border: 1px solid #555;
+  border-radius: 3px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 300;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.modal-btn.cancel {
+  background: #555;
+  color: white;
+}
+
+.modal-btn.cancel:hover {
+  background: #777;
+}
+
+.modal-btn.save {
+  background: #549e73;
+  color: white;
+}
+
+.modal-btn.save:hover {
+  background: #386a4d;
+}
