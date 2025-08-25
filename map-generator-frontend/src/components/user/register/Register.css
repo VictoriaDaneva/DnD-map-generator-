@@ -115,3 +115,17 @@
 .page-fade-in.hidden {
   opacity: 0;
 }
+
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.general-error {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
