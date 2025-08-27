@@ -15,6 +15,7 @@ import UserProvider from "./providers/UserProvider";
 import GuestGuard from "./guards/GuestRouter";
 import AuthGuard from "./guards/AuthGuard";
 import Logout from "./components/user/logout/Logout";
+import EditProfile from "./components/user/editProfile/EditProfile";
 
 function App() {
   return (

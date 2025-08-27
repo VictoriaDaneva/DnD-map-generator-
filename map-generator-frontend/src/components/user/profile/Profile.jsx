@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import "./Profile.css";
 import { useProfile } from "../../../api/authApi";
 import { useUserContext } from "../../../context/UserContext";
+import EditProfile from "../editProfile/EditProfile";
 
 export default function Profile() {
   const [isEntering, setIsEntering] = useState(true);
   const { fetchProfile } = useProfile();
   const [isProfileFetched, setIsProfileFetched] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { userId, username, email, imageUrl, address, phoneNumber } =
     useUserContext();
@@ -70,9 +72,17 @@ export default function Profile() {
               <p>
                 <strong>Address:</strong> {address}
               </p>
-              <Link to={`/profile/edit/${userId}`}>
-                <button className="edit-profile-btn">Edit Profile</button>
-              </Link>
+              <button
+                className="edit-profile-btn"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Edit Profile
+              </button>
+              <EditProfile
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                //onSave={handleSave}
+              />
             </div>
           </div>
         </div>
