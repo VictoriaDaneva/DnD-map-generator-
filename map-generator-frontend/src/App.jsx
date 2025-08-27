@@ -7,13 +7,14 @@ import Desert from "./components/biomes/desert/Desert";
 import Tundra from "./components/biomes/tundra/Tundra";
 import Navigation from "./components/navigation/Navigation";
 import Login from "./components/user/login/Login";
-import Register from "./components/user/register/register";
+import Register from "./components/user/register/Register";
 import Profile from "./components/user/profile/Profile";
 import PostsPage from "./components/posts/PostsPage";
 import PostPage from "./components/postPage/PostPage";
 import UserProvider from "./providers/UserProvider";
 import GuestGuard from "./guards/GuestRouter";
 import AuthGuard from "./guards/AuthGuard";
+import Logout from "./components/user/logout/Logout";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/biomes/grassland" element={<Grassland />} />
           <Route path="/biomes/desert" element={<Desert />} />
           <Route path="/biomes/tundra" element={<Tundra />} />
+          <Route path="/logout" element={<Logout />} />
         </Route>
 
         <Route element={<GuestGuard />}>
