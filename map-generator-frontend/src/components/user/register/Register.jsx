@@ -19,7 +19,6 @@ export default function Register() {
     const values = Object.fromEntries(formData.entries());
     const { username, email, phoneNumber, imageUrl, address, password } =
       values;
-    console.log({ username, email, phoneNumber, imageUrl, address, password });
 
     const confirmPassword = values["confirm-password"];
 
