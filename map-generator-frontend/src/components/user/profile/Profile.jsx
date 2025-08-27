@@ -1,25 +1,28 @@
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
 import "./Profile.css";
+import { useProfile } from "../../../api/authApi";
+import { useUserContext } from "../../../context/UserContext";
 
 export default function Profile() {
   const [isEntering, setIsEntering] = useState(true);
-  const [isFading, setIsFading] = useState(false);
+  const { fetchProfile } = useProfile();
+  const [isProfileFetched, setIsProfileFetched] = useState(false);
+
+  const { userId, username, email, imageUrl, address, phoneNumber } =
+    useUserContext();
+
+  useEffect(() => {
+    if (userId && !isProfileFetched) {
+      fetchProfile();
+      setIsProfileFetched(true);
+    }
+  }, [userId, isProfileFetched]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsEntering(false), 50);
     return () => clearTimeout(timer);
   }, []);
-
-  // Static mock data (replace later with backend/user context)
-  const userId = 1;
-  const user = {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    phone: "+1 234 567 890",
-    address: "123 Main Street, Springfield",
-    image: "https://i.pravatar.cc/200?img=32",
-  };
 
   // Static example maps/pets
   const maps = [
@@ -48,7 +51,7 @@ export default function Profile() {
             {/* Left side */}
             <div className="profile-left">
               <div className="profile-image">
-                <img src={user.image} alt={user.name} />
+                <img src={imageUrl} alt={username} />
               </div>
             </div>
 
@@ -56,16 +59,16 @@ export default function Profile() {
             <div className="profile-right">
               <h2>Profile</h2>
               <p>
-                <strong>Name:</strong> {user.name}
+                <strong>Name:</strong> {username}
               </p>
               <p>
-                <strong>Email:</strong> {user.email}
+                <strong>Email:</strong> {email}
               </p>
               <p>
-                <strong>Phone Number:</strong> {user.phone}
+                <strong>Phone Number:</strong> {phoneNumber}
               </p>
               <p>
-                <strong>Address:</strong> {user.address}
+                <strong>Address:</strong> {address}
               </p>
               <Link to={`/profile/edit/${userId}`}>
                 <button className="edit-profile-btn">Edit Profile</button>
