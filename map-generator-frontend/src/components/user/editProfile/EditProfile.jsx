@@ -63,11 +63,17 @@ export default function EditProfile({ isOpen, onClose }) {
     <div className="modal-overlay">
       <div className="modal-container">
         <h2 className="modal-title">Edit Profile</h2>
+
         <div className="modal-wrapper">
-          <form onSubmit={editProfileHandler} className="form-save-maps">
+          <form
+            id="edit-profile-form"
+            onSubmit={editProfileHandler}
+            className="form-save-maps"
+          >
             <label className="modal-label">Username *</label>
             <input
               type="text"
+              name="username"
               value={formData.username}
               onChange={handleInputChange}
               className="modal-input"
@@ -78,6 +84,7 @@ export default function EditProfile({ isOpen, onClose }) {
             <label className="modal-label">Email *</label>
             <input
               type="text"
+              name="email"
               value={formData.email}
               onChange={handleInputChange}
               className="modal-input"
@@ -87,6 +94,7 @@ export default function EditProfile({ isOpen, onClose }) {
             <label className="modal-label">Profile Picture *</label>
             <input
               type="text"
+              name="imageUrl"
               value={formData.imageUrl}
               onChange={handleInputChange}
               className="modal-input"
@@ -96,6 +104,7 @@ export default function EditProfile({ isOpen, onClose }) {
             <label className="modal-label">Phone Number *</label>
             <input
               type="text"
+              name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleInputChange}
               className="modal-input"
@@ -105,29 +114,35 @@ export default function EditProfile({ isOpen, onClose }) {
             <label className="modal-label">Address *</label>
             <input
               type="text"
+              name="address"
               value={formData.address}
               onChange={handleInputChange}
               className="modal-input"
               placeholder="Your address mister.."
             />
           </form>
+
           {formData.imageUrl && (
             <div className="modal-preview">
               <p className="modal-preview-label">Preview:</p>
               <img
                 src={formData.imageUrl}
-                onChange={handleInputChange}
                 alt="Profile Picture Preview"
                 className="modal-preview-img"
               />
             </div>
           )}
         </div>
+
         <div className="modal-buttons">
-          <button onClick={onClose} className="modal-btn cancel">
+          <button onClick={onClose} type="button" className="modal-btn cancel">
             Cancel
           </button>
-          <button type="submit" className="modal-btn save">
+          <button
+            type="submit"
+            form="edit-profile-form"
+            className="modal-btn save"
+          >
             Save
           </button>
         </div>
