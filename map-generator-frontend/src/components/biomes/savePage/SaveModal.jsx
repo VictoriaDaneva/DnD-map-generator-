@@ -1,28 +1,26 @@
-import { useState } from "react";
+import { createMap } from "../../../api/mapApi";
 import "./SaveModal.css";
+import { useNavigate } from "react-router";
 
 export default function SaveMapModal({
   isOpen,
   onClose,
-  onSave,
   previewImage,
+  onSave,
 }) {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
-  const [tags, setTags] = useState("");
+  const navigate = useNavigate();
+  const submitAction = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const mapData = Object.fromEntries(formData);
 
-  const handleSave = () => {
-    const mapData = {
-      title,
-      author,
-      description,
-      tags: tags.split(",").map((tag) => tag.trim()),
-    };
-    onSave(mapData);
-    onClose();
+    try {
+      await createMap(mapData);
+      navigate("/posts");
+    } catch (error) {
+      console.error("Failed to create pet:", error);
+    }
   };
-
   if (!isOpen) return null;
 
   return (
@@ -30,12 +28,14 @@ export default function SaveMapModal({
       <div className="modal-container">
         <h2 className="modal-title">Save Map</h2>
         <div className="modal-wrapper">
-          <form action="" className="form-save-maps">
+          <form
+            id="post-map-form"
+            onSubmit={submitAction}
+            className="form-save-maps"
+          >
             <label className="modal-label">Title *</label>
             <input
               type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
               className="modal-input"
               placeholder="Enter a title"
               required
@@ -44,16 +44,13 @@ export default function SaveMapModal({
             <label className="modal-label">Author</label>
             <input
               type="text"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
               className="modal-input"
               placeholder="Your name"
+              required
             />
 
             <label className="modal-label">Description</label>
             <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
               className="modal-textarea"
               placeholder="Describe your map..."
             />
@@ -61,8 +58,6 @@ export default function SaveMapModal({
             <label className="modal-label">Tags</label>
             <input
               type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
               className="modal-input"
               placeholder="e.g. forest, dungeon, boss"
             />
@@ -82,7 +77,7 @@ export default function SaveMapModal({
           <button onClick={onClose} className="modal-btn cancel">
             Cancel
           </button>
-          <button onClick={handleSave} className="modal-btn save">
+          <button form="post-map-form" type="submit" className="modal-btn save">
             Save
           </button>
         </div>

@@ -112,7 +112,7 @@ export default function Desert() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
-        previewImage="/login.jpg"
+        previewImage="/desert-biome.png"
       />
 
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
