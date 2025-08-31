@@ -1,4 +1,5 @@
 import { createMap } from "../../../api/mapApi";
+import { useUserContext } from "../../../context/UserContext";
 import "./SaveModal.css";
 import { useNavigate } from "react-router";
 
@@ -7,18 +8,34 @@ export default function SaveMapModal({
   onClose,
   previewImage,
   onSave,
+  placedItems,
+  biome,
 }) {
   const navigate = useNavigate();
+  const { accessToken } = useUserContext();
+
   const submitAction = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const mapData = Object.fromEntries(formData);
 
+    const fullMapData = onSave({
+      ...mapData,
+      biome,
+      items: placedItems.map((item) => ({
+        name: item.name,
+        x: item.x,
+        y: item.y,
+        size: item.size,
+        rotation: item.rotation,
+      })),
+    });
+
     try {
-      await createMap(mapData);
+      await createMap(fullMapData, accessToken);
       navigate("/posts");
     } catch (error) {
-      console.error("Failed to create pet:", error);
+      console.error("Failed to create map:", error);
     }
   };
   if (!isOpen) return null;
@@ -36,6 +53,7 @@ export default function SaveMapModal({
             <label className="modal-label">Title *</label>
             <input
               type="text"
+              name="title"
               className="modal-input"
               placeholder="Enter a title"
               required
@@ -44,6 +62,7 @@ export default function SaveMapModal({
             <label className="modal-label">Author</label>
             <input
               type="text"
+              name="author"
               className="modal-input"
               placeholder="Your name"
               required
@@ -51,6 +70,7 @@ export default function SaveMapModal({
 
             <label className="modal-label">Description</label>
             <textarea
+              name="description"
               className="modal-textarea"
               placeholder="Describe your map..."
             />
@@ -58,6 +78,7 @@ export default function SaveMapModal({
             <label className="modal-label">Tags</label>
             <input
               type="text"
+              name="tags"
               className="modal-input"
               placeholder="e.g. forest, dungeon, boss"
             />
@@ -67,6 +88,7 @@ export default function SaveMapModal({
               <p className="modal-preview-label">Preview:</p>
               <img
                 src={previewImage}
+                name="previewImage"
                 alt="Map Preview"
                 className="modal-preview-img"
               />

@@ -70,10 +70,21 @@ export default function Desert() {
   };
 
   const handleSave = (mapData) => {
-    console.log("Saving map with data:", mapData);
-    console.log("Placed items:", placedItems);
+    const fullMapData = {
+      ...mapData,
+      biome: "desert",
+      items: placedItems.map((item) => ({
+        name: item.name,
+        x: item.x,
+        y: item.y,
+        size: item.size,
+        rotation: item.rotation,
+      })),
+    };
 
-    // send this to backend!!
+    console.log("Saving map with data:", fullMapData);
+
+    return fullMapData;
   };
 
   return (
@@ -112,6 +123,8 @@ export default function Desert() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
+        placedItems={placedItems}
+        biome="desert"
         previewImage="/desert-biome.png"
       />
 

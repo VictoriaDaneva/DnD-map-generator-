@@ -79,8 +79,8 @@ const petsService = {
     );
   },
 
-  create(petData, userId) {
-    return Product.create({ ...petData, owner: userId });
+  create(mapData, userId) {
+    return Product.create({ ...mapData, owner: userId });
   },
 };
 

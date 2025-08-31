@@ -27,24 +27,17 @@ export const useDeleteMap = () => {
   return deleteMap;
 };
 
-export const createMap = () => {
-  const { accessToken } = useAuth();
+export const createMap = async (mapData, accessToken) => {
+  try {
+    const options = accessToken
+      ? { headers: { "X-Authorization": accessToken } }
+      : {};
 
-  return async (mapData) => {
-    try {
-      const options = {
-        headers: {
-          "X-Authorization": accessToken,
-        },
-      };
-
-      const response = await request.post(baseUrl, mapData, options);
-      return response;
-    } catch (error) {
-      console.error("Error creating map:", error);
-      throw error;
-    }
-  };
+    return await request.post(baseUrl, mapData, options);
+  } catch (error) {
+    console.error("Error creating map:", error);
+    throw error;
+  }
 };
 
 export const getMap = (mapId) => {

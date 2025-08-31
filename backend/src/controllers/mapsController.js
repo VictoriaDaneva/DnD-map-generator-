@@ -60,6 +60,7 @@ mapsController.delete("/:id", checkIsOwner, async (req, res) => {
     return res.status(400).json({ message: error });
   }
 });
+
 //Edit a post
 mapsController.put("/:id/edit", async (req, res) => {
   const productId = req.params.id;
@@ -103,11 +104,11 @@ mapsController.get("/", async (req, res) => {
 
 //Post a product
 mapsController.post("/", isAuth, async (req, res) => {
-  const petData = req.body;
+  const mapData = req.body;
   const userId = req.user;
 
   try {
-    const createdProduct = await mapsService.create(petData, userId);
+    const createdProduct = await mapsService.create(mapData, userId);
     await mapsService.addPostToUser(userId, createdProduct._id);
     return res.status(201).json({ data: createdProduct });
   } catch (err) {

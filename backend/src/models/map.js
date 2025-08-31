@@ -1,42 +1,72 @@
 import { Schema, model, Types } from "mongoose";
 
-const productSchema = new Schema({
-  imageUrl: {
+const itemSchema = new Schema({
+  name: {
     type: String,
-    required: [true, "An image is requered!!"],
+    required: [true, "Item type is required!"],
   },
-  title: {
-    type: String,
-    required: [true, "The product tittle is requered!!"],
+  x: {
+    type: Number,
+    required: [true, "X coordinate is required!"],
   },
-  breed: {
-    type: String,
-    required: [true, "Price is requered!!"],
+  y: {
+    type: Number,
+    required: [true, "Y coordinate is required!"],
   },
-  author: {
-    type: String,
-    required: [true, "The product type is requered!!"],
+  size: {
+    type: Number,
+    default: 60,
   },
-  petType: {
-    type: String,
-    required: [true, "petType is requered!!"],
-  },
-  description: {
-    type: String,
-    required: [true, "Description is requered!!"],
-  },
-
-  likes: [
-    {
-      type: Types.ObjectId,
-      ref: "Likes",
-    },
-  ],
-  owner: {
-    type: Types.ObjectId,
-    ref: "User",
+  rotation: {
+    type: Number,
+    default: 0,
   },
 });
+
+const productSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "The map title is required!"],
+    },
+
+    author: {
+      type: String,
+      required: [true, "Author is required!"],
+    },
+
+    description: {
+      type: String,
+      //required: [true, "Description is required!"],
+    },
+
+    biome: {
+      type: String,
+      required: [true, "Biome type is required!"],
+    },
+
+    tags: [
+      {
+        type: String,
+      },
+    ],
+
+    items: [itemSchema],
+
+    likes: [
+      {
+        type: Types.ObjectId,
+        ref: "Likes",
+      },
+    ],
+
+    owner: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
 
 const Product = model("Product", productSchema);
 export default Product;
