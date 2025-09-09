@@ -7,7 +7,7 @@ import {
   deleteItem as remove,
 } from "../../../utils/itemUtils";
 import Item from "../item/Item";
-import SaveModal from "../savePage/SaveModal";
+import SaveMapModal from "../savePage/SaveModal";
 
 export default function Desert() {
   const [isEntering, setIsEntering] = useState(true);
@@ -120,7 +120,7 @@ export default function Desert() {
         </button>
       </div>
 
-      <SaveModal
+      <SaveMapModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}

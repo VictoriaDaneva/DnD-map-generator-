@@ -7,12 +7,13 @@ import {
   deleteItem as remove,
 } from "../../../utils/itemUtils";
 import Item from "../item/Item";
+import SaveMapModal from "../savePage/SaveModal";
 
 export default function Grassland() {
   const [isEntering, setIsEntering] = useState(true);
   const [placedItems, setPlacedItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const containerRef = useRef(null);
 
   const { handleMouseDown } = useDragAndDrop(
@@ -65,7 +66,24 @@ export default function Grassland() {
     setPlacedItems((prev) => remove(prev, id));
     setSelectedItemId(null);
   };
+  const handleSave = (mapData) => {
+    const fullMapData = {
+      ...mapData,
+      biome: "grassland",
+      image: "/grassland-biome.png",
+      items: placedItems.map((item) => ({
+        name: item.name,
+        x: item.x,
+        y: item.y,
+        size: item.size,
+        rotation: item.rotation,
+      })),
+    };
 
+    console.log("Saving map with data:", fullMapData);
+
+    return fullMapData;
+  };
   return (
     <>
       <div
@@ -91,6 +109,22 @@ export default function Grassland() {
           />
         ))}
       </div>
+      <div className="save-btn-wrapper">
+        <button className="save-btn" onClick={() => setIsModalOpen(true)}>
+          Save
+        </button>
+      </div>
+
+      <SaveMapModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+        placedItems={placedItems}
+        biome="grassland"
+        image="/grassland-biome.png"
+        previewImage="/grassland-biome.png"
+      />
+
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </>
   );
