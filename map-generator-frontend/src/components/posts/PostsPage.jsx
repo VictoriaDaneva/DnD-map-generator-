@@ -1,71 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import "./PostsPage.css";
-
-const maps = [
-  {
-    id: 1,
-    title: "Sands of Eternity",
-    type: "desert",
-    img: "/tundra-biome.png",
-    author: "Viktoria",
-  },
-  {
-    id: 2,
-    title: "Frozen Wastes",
-    type: "tundra",
-    img: "/register.jpg",
-    author: "DM_Arctic",
-  },
-  {
-    id: 3,
-    title: "Emerald Plains",
-    type: "grassland",
-    img: "/login.jpg",
-    author: "MapMaker42",
-  },
-  {
-    id: 4,
-    title: "Lost Jungle",
-    type: "grassland",
-    img: "/login2.jpg",
-    author: "ExplorerX",
-  },
-  {
-    id: 5,
-    title: "Sands of Eternity",
-    type: "desert",
-    img: "/tundra-biome.png",
-    author: "Viktoria",
-  },
-  {
-    id: 6,
-    title: "Frozen Wastes",
-    type: "tundra",
-    img: "/register.jpg",
-    author: "DM_Arctic",
-  },
-  {
-    id: 7,
-    title: "Emerald Plains",
-    type: "grassland",
-    img: "/login.jpg",
-    author: "MapMaker42",
-  },
-  {
-    id: 8,
-    title: "Lost Jungle",
-    type: "grassland",
-    img: "/login2.jpg",
-    author: "ExplorerX",
-  },
-];
+import { getMaps } from "../../api/mapApi";
 
 export default function PostsPage() {
   const [filter, setFilter] = useState("all");
+  const [maps, setMaps] = useState([]);
+
+  useEffect(() => {
+    async function fetchMaps() {
+      const allMaps = await getMaps();
+      setMaps(allMaps);
+    }
+    fetchMaps();
+  }, []);
 
   const filteredMaps =
-    filter === "all" ? maps : maps.filter((map) => map.type === filter);
+    filter === "all" ? maps : maps.filter((map) => map.biome === filter);
+
+  console.log(maps);
 
   return (
     <div className="posts-page">
@@ -83,8 +36,42 @@ export default function PostsPage() {
 
       <div className="grid-posts-container">
         {filteredMaps.map((map) => (
-          <Link key={map.id} to={`/post/nesh`} className="card">
-            <img src={map.img} alt={map.title} />
+          <Link key={map._id} to={`/post/${map._id}`} className="card">
+            <img
+              src={map.image}
+              alt={map.title}
+              className="map-background"
+              onLoad={(e) => {
+                map._originalWidth = e.target.naturalWidth;
+                map._originalHeight = e.target.naturalHeight;
+              }}
+            />
+
+            {map.items?.map((item) => {
+              const naturalWidth = map._naturalWidth || 800;
+              const naturalHeight = map._naturalHeight || 600;
+
+              const previewWidth = 280;
+              const previewHeight = 200;
+
+              const scaleX = previewWidth / naturalWidth;
+              const scaleY = previewHeight / naturalHeight;
+
+              return (
+                <img
+                  key={item._id}
+                  src={`/${item.name}.png`}
+                  alt={item.name}
+                  className="map-item"
+                  style={{
+                    left: `${item.x * scaleX}px`,
+                    top: `${item.y * scaleY}px`,
+                    width: `${item.size * scaleX}px`,
+                    transform: `rotate(${item.rotation}deg)`,
+                  }}
+                />
+              );
+            })}
             <div className="overlay">
               <h3>{map.title}</h3>
               <p>By {map.author}</p>

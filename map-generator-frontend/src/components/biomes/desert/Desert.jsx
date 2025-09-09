@@ -73,6 +73,7 @@ export default function Desert() {
     const fullMapData = {
       ...mapData,
       biome: "desert",
+      image: "/desert-biome.png",
       items: placedItems.map((item) => ({
         name: item.name,
         x: item.x,
@@ -125,6 +126,7 @@ export default function Desert() {
         onSave={handleSave}
         placedItems={placedItems}
         biome="desert"
+        image="/desert-biome.png"
         previewImage="/desert-biome.png"
       />
 

@@ -10,6 +10,7 @@ export default function SaveMapModal({
   onSave,
   placedItems,
   biome,
+  image,
 }) {
   const navigate = useNavigate();
   const { accessToken } = useUserContext();
@@ -22,6 +23,7 @@ export default function SaveMapModal({
     const fullMapData = onSave({
       ...mapData,
       biome,
+      image,
       items: placedItems.map((item) => ({
         name: item.name,
         x: item.x,

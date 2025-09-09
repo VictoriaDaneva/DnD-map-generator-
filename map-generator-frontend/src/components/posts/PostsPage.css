@@ -88,3 +88,21 @@
   font-size: 0.9rem;
   color: #aaa;
 }
+.map-preview {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.map-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.map-item {
+  position: absolute;
+  pointer-events: none;
+}

@@ -44,7 +44,10 @@ const productSchema = new Schema(
       type: String,
       required: [true, "Biome type is required!"],
     },
-
+    image: {
+      type: String,
+      required: [true, "Image type is required!"],
+    },
     tags: [
       {
         type: String,
