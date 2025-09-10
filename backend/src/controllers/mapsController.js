@@ -47,6 +47,46 @@ mapsController.get("/:id/like", isOwner, async (req, res) => {
   }
 });
 
+mapsController.put("/comments/:commentId", isAuth, async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.user._id;
+  const { text } = req.body;
+
+  try {
+    const updatedComment = await mapsService.editComment(
+      commentId,
+      userId,
+      text
+    );
+    if (!updatedComment) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized or comment not found" });
+    }
+    res.json(updatedComment);
+  } catch (err) {
+    return res.status(400).json({ message: getErrrorMessage(err) });
+  }
+});
+
+// Delete comment
+mapsController.delete("/comments/:commentId", isAuth, async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const deleted = await mapsService.deleteComment(commentId, userId);
+    if (!deleted) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized or comment not found" });
+    }
+    res.json({ message: "Comment deleted successfully" });
+  } catch (err) {
+    return res.status(400).json({ message: getErrrorMessage(err) });
+  }
+});
+
 //Add comments
 mapsController.post("/:id/comments", isAuth, async (req, res) => {
   const productId = req.params.id;
@@ -94,7 +134,7 @@ mapsController.get("/:id", async (req, res) => {
   const productId = req.params.id;
 
   try {
-    const data = await mapsService.getOne(productId).populate("owner");
+    const data = await mapsService.getOne(productId);
     return res.json(data);
   } catch (err) {
     console.log(getErrrorMessage(err));

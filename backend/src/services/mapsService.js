@@ -1,3 +1,4 @@
+import Comment from "../models/comment.js";
 import Product from "../models/map.js";
 import user from "../models/user.js";
 
@@ -5,24 +6,7 @@ const mapsService = {
   search(query) {
     return Product.find({ title: { $regex: query, $options: "i" } });
   },
-
-  //Wishlist Functionality
-  removeWishlistUser(productId, userId) {
-    return user.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { wishlist: productId } },
-      { runValidators: true, new: true }
-    );
-  },
-
-  unlike(productId, userId) {
-    return Product.findByIdAndUpdate(
-      productId,
-      { $pull: { likes: userId } },
-      { runValidators: true, new: true }
-    );
-  },
-
+  //Comment functionality
   async addComment(productId, userId, text) {
     // Create comment
     const comment = await Comment.create({
@@ -42,6 +26,54 @@ const mapsService = {
     });
 
     return comment;
+  },
+
+  async editComment(commentId, userId, newText) {
+    const comment = await Comment.findOneAndUpdate(
+      { _id: commentId, user: userId },
+      { text: newText },
+      { new: true, runValidators: true }
+    );
+    return comment;
+  },
+
+  // Delete comment
+  async deleteComment(commentId, userId) {
+    const comment = await Comment.findOneAndDelete({
+      _id: commentId,
+      user: userId,
+    });
+
+    if (comment) {
+      // Remove from product
+      await Product.findByIdAndUpdate(comment.product, {
+        $pull: { comments: comment._id },
+      });
+
+      // Remove from user
+      await user.findByIdAndUpdate(userId, {
+        $pull: { comments: comment._id },
+      });
+    }
+
+    return comment;
+  },
+
+  //Wishlist Functionality
+  removeWishlistUser(productId, userId) {
+    return user.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { wishlist: productId } },
+      { runValidators: true, new: true }
+    );
+  },
+
+  unlike(productId, userId) {
+    return Product.findByIdAndUpdate(
+      productId,
+      { $pull: { likes: userId } },
+      { runValidators: true, new: true }
+    );
   },
 
   addToWishlistUser(productId, userId) {
@@ -85,7 +117,12 @@ const mapsService = {
   },
 
   getOne(productId) {
-    return Product.findById(productId).lean();
+    return Product.findById(productId)
+      .populate("owner")
+      .populate({
+        path: "comments",
+        populate: { path: "user", select: "username" },
+      });
   },
 
   getAll() {
