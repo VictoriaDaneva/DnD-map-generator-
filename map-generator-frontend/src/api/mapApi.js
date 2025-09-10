@@ -5,6 +5,9 @@ import request from "../utils/request";
 const baseUrl = `http://localhost:8080/api/products`;
 const profileUrl = `http://localhost:8080/api/users/profile`;
 
+//comments
+
+//map
 export const useDeleteMap = () => {
   const { accessToken } = useAuth();
 

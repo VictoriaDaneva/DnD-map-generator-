@@ -25,7 +25,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/biomes" element={<Biomes />} />
         <Route path="/posts" element={<PostsPage />} />
-        <Route path="/post/nesh" element={<PostPage />} />
+        <Route path="/posts/:mapId" element={<PostPage />} />
 
         <Route element={<AuthGuard />}>
           <Route path="/profile" element={<Profile />} />

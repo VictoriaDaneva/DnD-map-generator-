@@ -7,21 +7,34 @@
 }
 
 .post-image-container {
-  margin-right: 130px;
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 70px;
+  margin-left: 160px;
+  margin-bottom: 40px;
 }
 
-.image-container img {
-  max-width: 100%;
+.background-image {
+  width: 100%;
+  height: auto;
   border-radius: 12px;
+}
+
+.map-item {
+  position: absolute;
+  pointer-events: none;
+}
+
+.map-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .actions {
   display: flex;
-  margin-right: 130px;
+  margin-right: 210px;
   justify-content: center;
   gap: 12px;
   margin-bottom: 20px;
@@ -44,7 +57,7 @@
 }
 
 .post-info {
-  margin-right: 130px;
+  margin-right: 210px;
   text-align: center;
   margin-bottom: 40px;
 }
@@ -150,4 +163,8 @@
 
 .comment-actions button:hover {
   color: #fff;
+}
+
+.no-comments {
+  text-align: center;
 }
