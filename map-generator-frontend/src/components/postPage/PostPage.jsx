@@ -3,7 +3,7 @@ import "./PostPage.css";
 import useAuth from "../../hooks/useAuth";
 import { getMap, useDeleteMap } from "../../api/mapApi";
 import { postComment, deleteComment } from "../../api/mapApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -14,6 +14,12 @@ export default function PostPage() {
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+
+  useEffect(() => {
+    if (map?.comments) {
+      setComments(map.comments);
+    }
+  }, [map]);
 
   if (!map) {
     return <p>Loading...</p>;
@@ -74,13 +80,13 @@ export default function PostPage() {
           by <span className="author">{map.author}</span>
         </p>
         <p className="meta">
-          Published: {map.date} | Owned by{" "}
+          Published: {map.createdAt} | Owned by{" "}
           <span className="owner">{map.owner?.username}</span>
         </p>
       </div>
 
       <div className="comments">
-        <h2>Comments ({map.comments?.length})</h2>
+        <h2>Comments ({comments?.length})</h2>
 
         {isAuthenticated && (
           <div className="comment-input">
@@ -94,8 +100,8 @@ export default function PostPage() {
         )}
 
         <div className="comment-list">
-          {map.comments?.length ? (
-            map.comments.map((comment) => (
+          {comments?.length ? (
+            comments.map((comment) => (
               <div key={comment._id} className="comment">
                 <div className="comment-user">{comment.user?.username}</div>
                 <div className="comment-date">
