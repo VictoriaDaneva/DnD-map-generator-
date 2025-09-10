@@ -47,28 +47,6 @@ mapsController.get("/:id/like", isOwner, async (req, res) => {
   }
 });
 
-mapsController.put("/comments/:commentId", isAuth, async (req, res) => {
-  const { commentId } = req.params;
-  const userId = req.user._id;
-  const { text } = req.body;
-
-  try {
-    const updatedComment = await mapsService.editComment(
-      commentId,
-      userId,
-      text
-    );
-    if (!updatedComment) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized or comment not found" });
-    }
-    res.json(updatedComment);
-  } catch (err) {
-    return res.status(400).json({ message: getErrrorMessage(err) });
-  }
-});
-
 // Delete comment
 mapsController.delete("/comments/:commentId", isAuth, async (req, res) => {
   const { commentId } = req.params;

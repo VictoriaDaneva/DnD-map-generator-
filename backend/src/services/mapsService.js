@@ -28,15 +28,6 @@ const mapsService = {
     return comment;
   },
 
-  async editComment(commentId, userId, newText) {
-    const comment = await Comment.findOneAndUpdate(
-      { _id: commentId, user: userId },
-      { text: newText },
-      { new: true, runValidators: true }
-    );
-    return comment;
-  },
-
   // Delete comment
   async deleteComment(commentId, userId) {
     const comment = await Comment.findOneAndDelete({

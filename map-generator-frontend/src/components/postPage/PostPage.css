@@ -111,18 +111,18 @@
   font-family: inherit;
 }
 
-.comment-input textarea:disabled {
-  opacity: 0.7;
-}
-
 .comment-input button {
   align-self: flex-end;
-  background: #333;
+  background: #75bf5e97;
   color: #aaa;
   border: none;
   padding: 6px 14px;
   border-radius: 6px;
-  cursor: not-allowed;
+  cursor: pointer;
+}
+.comment-input button:hover {
+  background: #96f57984;
+  color: #fff;
 }
 .comment-list {
   display: flex;

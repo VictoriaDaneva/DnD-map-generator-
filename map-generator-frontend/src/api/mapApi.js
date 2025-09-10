@@ -7,6 +7,28 @@ const profileUrl = `http://localhost:8080/api/users/profile`;
 
 //comments
 
+export const postComment = async (mapId, text, accessToken) => {
+  const options = {
+    headers: { "X-Authorization": accessToken },
+  };
+  const response = await request.post(
+    `${baseUrl}/${mapId}/comments`,
+    { text },
+    options
+  );
+  return response;
+};
+
+export const deleteComment = async (commentId, accessToken) => {
+  const options = {
+    headers: { "X-Authorization": accessToken },
+  };
+  const response = await request.delete(
+    `${baseUrl}/comments/${commentId}`,
+    options
+  );
+  return response;
+};
 //map
 export const useDeleteMap = () => {
   const { accessToken } = useAuth();

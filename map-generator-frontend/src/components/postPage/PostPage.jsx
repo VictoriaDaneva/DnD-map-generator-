@@ -2,6 +2,8 @@ import { useNavigate, useParams } from "react-router";
 import "./PostPage.css";
 import useAuth from "../../hooks/useAuth";
 import { getMap, useDeleteMap } from "../../api/mapApi";
+import { postComment, deleteComment } from "../../api/mapApi";
+import { useState } from "react";
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -10,11 +12,29 @@ export default function PostPage() {
   const { map } = getMap(mapId);
   const deleteMap = useDeleteMap();
 
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+
   if (!map) {
     return <p>Loading...</p>;
   }
 
-  console.log(map);
+  const handlePostComment = async () => {
+    if (!newComment.trim()) return;
+
+    const comment = await postComment(map._id, newComment, accessToken);
+    setComments([comment, ...comments]);
+    setNewComment("");
+  };
+
+  // Delete a comment
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm("Are you sure you want to delete this comment?"))
+      return;
+
+    await deleteComment(commentId, accessToken);
+    setComments(comments.filter((c) => c._id !== commentId));
+  };
 
   return (
     <div className="post-page">
@@ -60,13 +80,21 @@ export default function PostPage() {
       </div>
 
       <div className="comments">
-        <h2>Comments {map.comments?.length}</h2>
-        <div className="comment-input">
-          <textarea placeholder="Write a comment..." disabled />
-          <button disabled>Post</button>
-        </div>
+        <h2>Comments ({map.comments?.length})</h2>
+
+        {isAuthenticated && (
+          <div className="comment-input">
+            <textarea
+              placeholder="Write a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <button onClick={handlePostComment}>Post</button>
+          </div>
+        )}
+
         <div className="comment-list">
-          {map.comments?.length > 0 ? (
+          {map.comments?.length ? (
             map.comments.map((comment) => (
               <div key={comment._id} className="comment">
                 <div className="comment-user">{comment.user?.username}</div>
@@ -74,6 +102,14 @@ export default function PostPage() {
                   {new Date(comment.date).toLocaleDateString()}
                 </div>
                 <p>{comment.text}</p>
+
+                {comment.user?._id === userId && (
+                  <div className="comment-actions">
+                    <button onClick={() => handleDeleteComment(comment._id)}>
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           ) : (
