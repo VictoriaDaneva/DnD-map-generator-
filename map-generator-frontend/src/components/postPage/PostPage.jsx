@@ -14,6 +14,12 @@ export default function PostPage() {
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [isEntering, setIsEntering] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsEntering(false), 30);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (map?.comments) {
@@ -123,6 +129,7 @@ export default function PostPage() {
           )}
         </div>
       </div>
+      <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </div>
   );
 }

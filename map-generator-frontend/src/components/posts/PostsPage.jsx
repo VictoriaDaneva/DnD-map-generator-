@@ -6,6 +6,12 @@ import { getMaps } from "../../api/mapApi";
 export default function PostsPage() {
   const [filter, setFilter] = useState("all");
   const [maps, setMaps] = useState([]);
+  const [isEntering, setIsEntering] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsEntering(false), 30);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     async function fetchMaps() {
@@ -79,6 +85,7 @@ export default function PostsPage() {
           </Link>
         ))}
       </div>
+      <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </div>
   );
 }
