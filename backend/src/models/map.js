@@ -55,6 +55,12 @@ const productSchema = new Schema(
     ],
 
     items: [itemSchema],
+    comments: [
+      {
+        type: Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
 
     likes: [
       {

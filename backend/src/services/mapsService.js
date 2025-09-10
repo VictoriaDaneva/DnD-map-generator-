@@ -1,7 +1,7 @@
 import Product from "../models/map.js";
 import user from "../models/user.js";
 
-const petsService = {
+const mapsService = {
   search(query) {
     return Product.find({ title: { $regex: query, $options: "i" } });
   },
@@ -21,6 +21,27 @@ const petsService = {
       { $pull: { likes: userId } },
       { runValidators: true, new: true }
     );
+  },
+
+  async addComment(productId, userId, text) {
+    // Create comment
+    const comment = await Comment.create({
+      text,
+      user: userId,
+      product: productId,
+    });
+
+    // Add comment ref to Product
+    await Product.findByIdAndUpdate(productId, {
+      $push: { comments: comment._id },
+    });
+
+    // Add comment ref to User
+    await user.findByIdAndUpdate(userId, {
+      $push: { comments: comment._id },
+    });
+
+    return comment;
   },
 
   addToWishlistUser(productId, userId) {
@@ -84,4 +105,4 @@ const petsService = {
   },
 };
 
-export default petsService;
+export default mapsService;

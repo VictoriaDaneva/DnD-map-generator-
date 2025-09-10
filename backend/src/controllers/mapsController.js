@@ -47,6 +47,21 @@ mapsController.get("/:id/like", isOwner, async (req, res) => {
   }
 });
 
+//Add comments
+mapsController.post("/:id/comments", isAuth, async (req, res) => {
+  const productId = req.params.id;
+  const userId = req.user._id;
+  const { text } = req.body;
+
+  try {
+    const comment = await mapsService.addComment(productId, userId, text);
+    res.status(201).json(comment);
+  } catch (err) {
+    const error = getErrrorMessage(err);
+    return res.status(400).json({ message: error });
+  }
+});
+
 //Delete a post
 mapsController.delete("/:id", checkIsOwner, async (req, res) => {
   const productId = req.params.id;
