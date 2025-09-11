@@ -37,7 +37,13 @@ const userSchema = new Schema({
     required: [true, "Password is required!"],
     minlength: [5, "Password must be at least 5 characters long!"],
   },
-  wishlist: [
+  likes: [
+    {
+      type: Types.ObjectId,
+      ref: "Product",
+    },
+  ],
+  favourites: [
     {
       type: Types.ObjectId,
       ref: "Product",

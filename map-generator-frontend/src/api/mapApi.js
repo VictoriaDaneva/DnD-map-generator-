@@ -5,7 +5,74 @@ import request from "../utils/request";
 const baseUrl = `http://localhost:8080/api/products`;
 const profileUrl = `http://localhost:8080/api/users/profile`;
 
-//comments
+//like -
+export const getLikeListMap = async (accessToken) => {
+  if (!accessToken) {
+    console.error("❌ Error: No access token provided.");
+    throw new Error("No access token provided");
+  }
+
+  const options = {
+    headers: {
+      "X-Authorization": accessToken,
+    },
+  };
+
+  try {
+    const response = await request.get(`${profileUrl}/likes`, options);
+    return response;
+  } catch (error) {
+    console.error("❌ Error fetching Likes list:", error);
+    throw error;
+  }
+};
+
+export const useUnlikeMap = () => {
+  const { accessToken } = useAuth();
+  const unlikeMap = async (mapId) => {
+    const options = {
+      headers: {
+        "X-Authorization": accessToken,
+      },
+    };
+
+    try {
+      const response = await request.get(
+        `${baseUrl}/${mapId}/like/unsub`,
+        options
+      );
+      return response;
+    } catch (error) {
+      console.error("❌ Error unliking from map:", error);
+      throw error;
+    }
+  };
+
+  return unlikeMap;
+};
+
+export const useLikeMap = () => {
+  const { accessToken } = useAuth();
+  const likeMap = async (mapId) => {
+    const options = {
+      headers: {
+        "X-Authorization": accessToken,
+      },
+    };
+
+    try {
+      const response = await request.get(`${baseUrl}/${mapId}/like`, options);
+      return response;
+    } catch (error) {
+      console.error("❌ Error liking map:", error);
+      throw error;
+    }
+  };
+
+  return likeMap;
+};
+
+//comments - delete post
 
 export const postComment = async (mapId, text, accessToken) => {
   const options = {
@@ -29,7 +96,8 @@ export const deleteComment = async (commentId, accessToken) => {
   );
   return response;
 };
-//map
+
+//map - delete get edit post
 export const useDeleteMap = () => {
   const { accessToken } = useAuth();
 
@@ -44,12 +112,27 @@ export const useDeleteMap = () => {
       const response = await request.delete(`${baseUrl}/${mapId}`, options);
       return response;
     } catch (error) {
-      console.error("❌ Error deleting map:", error);
+      console.log("❌ Error deleting map:", error);
       throw error;
     }
   };
 
   return deleteMap;
+};
+
+export const editPet = async (petId, updatedData, accessToken) => {
+  try {
+    const options = {
+      headers: {
+        "X-Authorization": accessToken,
+      },
+    };
+
+    return await request.put(`${baseUrl}/${petId}/edit`, updatedData, options);
+  } catch (error) {
+    console.error("Error updating pet:", error);
+    throw error;
+  }
 };
 
 export const createMap = async (mapData, accessToken) => {

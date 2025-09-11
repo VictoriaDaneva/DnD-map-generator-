@@ -1,7 +1,13 @@
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import "./PostPage.css";
 import useAuth from "../../hooks/useAuth";
-import { getMap, useDeleteMap } from "../../api/mapApi";
+import {
+  getLikeListMap,
+  getMap,
+  useDeleteMap,
+  useLikeMap,
+  useUnlikeMap,
+} from "../../api/mapApi";
 import { postComment, deleteComment } from "../../api/mapApi";
 import { useEffect, useState } from "react";
 
@@ -11,26 +17,42 @@ export default function PostPage() {
   const { mapId } = useParams();
   const { map } = getMap(mapId);
   const deleteMap = useDeleteMap();
+  const likeMap = useLikeMap();
+  const unlikeMap = useUnlikeMap();
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [isEntering, setIsEntering] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(map?.likes || []);
+  const [favouriteList, setFavouriteList] = useState([]);
 
+  //animation effect
   useEffect(() => {
     const timer = setTimeout(() => setIsEntering(false), 30);
     return () => clearTimeout(timer);
   }, []);
 
+  // likes set
+  useEffect(() => {
+    if (map?.likes) {
+      setLikes(map.likes);
+    }
+  }, [map]);
+
+  //comments set
   useEffect(() => {
     if (map?.comments) {
       setComments(map.comments);
     }
   }, [map]);
 
+  //loader
   if (!map) {
     return <p>Loading...</p>;
   }
 
+  //comments functionality
   const handlePostComment = async () => {
     if (!newComment.trim()) return;
 
@@ -39,7 +61,6 @@ export default function PostPage() {
     setNewComment("");
   };
 
-  // Delete a comment
   const handleDeleteComment = async (commentId) => {
     if (!window.confirm("Are you sure you want to delete this comment?"))
       return;
@@ -48,6 +69,56 @@ export default function PostPage() {
     setComments(comments.filter((c) => c._id !== commentId));
   };
 
+  //like functionality
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      if (isAuthenticated && accessToken) {
+        try {
+          const response = await getLikeListMap(accessToken);
+
+          if (Array.isArray(response)) {
+            const isInLikeList = response.some((m) => m._id === mapId);
+            setIsLiked(isInLikeList);
+          } else {
+            console.error(
+              "Expected response to be an array, but got:",
+              response
+            );
+          }
+        } catch (error) {
+          console.error("Error checking if map is in like list", error);
+        }
+      }
+    };
+
+    checkIfLiked();
+  }, [mapId, isAuthenticated, accessToken]);
+
+  const mapLikeListHandler = async () => {
+    await likeMap(mapId);
+    setIsLiked(true);
+    setLikes([...likes, { _id: userId }]);
+  };
+
+  const mapUnlikeHandler = async () => {
+    await unlikeMap(mapId);
+    setIsLiked(false);
+    setLikes(likes.filter((l) => l._id !== userId));
+  };
+
+  //favorite functionality
+
+  //owner - edit and delete
+
+  const isOwner = map?.owner?._id && userId === map.owner._id;
+
+  const mapDeleteHandler = async () => {
+    const hasConfirm = confirm(`Are you sure you want to delete ${map.title}?`);
+    if (!hasConfirm) return;
+
+    await deleteMap(mapId);
+    navigate("/posts");
+  };
   return (
     <div className="post-page">
       <div className="post-image-container">
@@ -74,10 +145,31 @@ export default function PostPage() {
         })}
       </div>
       <div className="actions">
-        <button>⭐ Add to Favourites</button>
-        <button>💬 Comment</button>
-        <button>❤️ Like</button>
-        <button>⬇ Download</button>
+        {isOwner ? (
+          <>
+            <Link to={`/map/${mapId}/edit`}>
+              <button className="edit-button">Edit</button>
+            </Link>
+            <button onClick={mapDeleteHandler} className="delete-button">
+              Delete
+            </button>
+          </>
+        ) : isAuthenticated ? (
+          <>
+            {!isLiked ? (
+              <button onClick={mapLikeListHandler} className="like-button">
+                ❤️ Like ({likes.length})
+              </button>
+            ) : (
+              <button onClick={mapUnlikeHandler} className="like-button">
+                💔 Unlike ({likes.length})
+              </button>
+            )}
+            <button>⭐ Add to Favourites</button>
+            <button>💬 Comment</button>
+            <button>⬇ Download</button>
+          </>
+        ) : null}
       </div>
 
       <div className="post-info">

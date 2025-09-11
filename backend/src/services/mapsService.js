@@ -3,9 +3,6 @@ import Product from "../models/map.js";
 import user from "../models/user.js";
 
 const mapsService = {
-  search(query) {
-    return Product.find({ title: { $regex: query, $options: "i" } });
-  },
   //Comment functionality
   async addComment(productId, userId, text) {
     // Create comment
@@ -50,11 +47,11 @@ const mapsService = {
     return comment;
   },
 
-  //Wishlist Functionality
-  removeWishlistUser(productId, userId) {
+  //Like Functionality
+  removeLikeUser(productId, userId) {
     return user.findOneAndUpdate(
       { _id: userId },
-      { $pull: { wishlist: productId } },
+      { $pull: { likes: productId } },
       { runValidators: true, new: true }
     );
   },
@@ -67,10 +64,10 @@ const mapsService = {
     );
   },
 
-  addToWishlistUser(productId, userId) {
+  addToLikeUser(productId, userId) {
     return user.findByIdAndUpdate(
       userId,
-      { $push: { wishlist: productId } },
+      { $push: { likes: productId } },
       { new: true, runValidators: true }
     );
   },

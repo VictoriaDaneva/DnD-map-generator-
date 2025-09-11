@@ -7,9 +7,9 @@ const authService = {
     const User = await user.findById(userId).populate("posts");
     return User.posts;
   },
-  async getWishlist(userId) {
-    const User = await user.findById(userId).populate("wishlist");
-    return User.wishlist;
+  async getLikesList(userId) {
+    const User = await user.findById(userId).populate("likes");
+    return User.likes;
   },
   async editProfile(userId, userData) {
     return user.findByIdAndUpdate(userId, userData, {

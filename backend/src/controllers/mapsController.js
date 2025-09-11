@@ -5,27 +5,14 @@ import { isAuth } from "../middleware/authMiddleware.js";
 
 const mapsController = Router();
 
-//Search
-mapsController.get("/search", async (req, res) => {
-  const query = req.query.q;
-
-  try {
-    const search = await mapsService.search(query);
-    res.status(200).json(search);
-  } catch (err) {
-    const error = getErrrorMessage(err);
-    return res.status(400).json({ message: error });
-  }
-});
-
-//Remove from wishlist
+//Remove from likes
 mapsController.get("/:id/like/unsub", isOwner, async (req, res) => {
   const productId = req.params.id;
   const userId = req.user._id;
 
   try {
     await mapsService.unlike(productId, userId);
-    await mapsService.removeWishlistUser(productId, userId);
+    await mapsService.removeLikeUser(productId, userId);
     res.status(200).json({ message: "Product is unliked successfully" });
   } catch (err) {
     const error = getErrrorMessage(err);
@@ -33,13 +20,13 @@ mapsController.get("/:id/like/unsub", isOwner, async (req, res) => {
   }
 });
 
-//Add to wishlist
+//Add to likes
 mapsController.get("/:id/like", isOwner, async (req, res) => {
   const productId = req.params.id;
   const userId = req.user._id;
   try {
     await mapsService.like(productId, userId);
-    const isLiked = await mapsService.addToWishlistUser(productId, userId);
+    const isLiked = await mapsService.addToLikeUser(productId, userId);
     res.status(200).json({ isLiked });
   } catch (err) {
     const error = getErrrorMessage(err);
@@ -169,7 +156,7 @@ async function checkIsOwner(req, res, next) {
     return res.status(401).json({ message: "Unauthorized: No user ID found" });
   }
 
-  if (product.owner.toString() === req.user._id) {
+  if (product.owner._id.toString() === req.user._id) {
     next();
   } else {
     return res.status(403).json({ message: "Forbidden: Not the owner" });
