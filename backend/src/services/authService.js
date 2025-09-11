@@ -7,6 +7,10 @@ const authService = {
     const User = await user.findById(userId).populate("posts");
     return User.posts;
   },
+  async getFavouriteList(userId) {
+    const User = await user.findById(userId).populate("favourite");
+    return User.favourite;
+  },
   async getLikesList(userId) {
     const User = await user.findById(userId).populate("likes");
     return User.likes;

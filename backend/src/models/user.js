@@ -43,7 +43,7 @@ const userSchema = new Schema({
       ref: "Product",
     },
   ],
-  favourites: [
+  favourite: [
     {
       type: Types.ObjectId,
       ref: "Product",

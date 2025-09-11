@@ -47,12 +47,45 @@ const mapsService = {
     return comment;
   },
 
+  //Favourite Functionality
+  favourite(productId, userId) {
+    return Product.findByIdAndUpdate(
+      productId,
+      { $addToSet: { favourites: userId } },
+      { new: true, runValidators: true }
+    );
+  },
+
+  unFavourite(productId, userId) {
+    return Product.findByIdAndUpdate(
+      productId,
+      { $pull: { favourites: userId } },
+      { new: true, runValidators: true }
+    );
+  },
+
+  addToFavouriteUser(productId, userId) {
+    return user.findByIdAndUpdate(
+      userId,
+      { $addToSet: { favourite: productId } },
+      { new: true, runValidators: true }
+    );
+  },
+
+  removeFavouriteUser(productId, userId) {
+    return user.findByIdAndUpdate(
+      userId,
+      { $pull: { favourite: productId } },
+      { new: true, runValidators: true }
+    );
+  },
+
   //Like Functionality
-  removeLikeUser(productId, userId) {
-    return user.findOneAndUpdate(
-      { _id: userId },
-      { $pull: { likes: productId } },
-      { runValidators: true, new: true }
+  like(productId, userId) {
+    return Product.findByIdAndUpdate(
+      productId,
+      { $addToSet: { likes: userId } },
+      { new: true, runValidators: true }
     );
   },
 
@@ -60,22 +93,22 @@ const mapsService = {
     return Product.findByIdAndUpdate(
       productId,
       { $pull: { likes: userId } },
-      { runValidators: true, new: true }
+      { new: true, runValidators: true }
     );
   },
 
   addToLikeUser(productId, userId) {
     return user.findByIdAndUpdate(
       userId,
-      { $push: { likes: productId } },
+      { $addToSet: { likes: productId } },
       { new: true, runValidators: true }
     );
   },
 
-  like(productId, userId) {
-    return Product.findByIdAndUpdate(
-      productId,
-      { $push: { likes: userId } },
+  removeLikeUser(productId, userId) {
+    return user.findByIdAndUpdate(
+      userId,
+      { $pull: { likes: productId } },
       { new: true, runValidators: true }
     );
   },

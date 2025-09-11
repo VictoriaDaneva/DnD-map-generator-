@@ -5,7 +5,78 @@ import request from "../utils/request";
 const baseUrl = `http://localhost:8080/api/products`;
 const profileUrl = `http://localhost:8080/api/users/profile`;
 
-//like -
+//favourite
+
+export const useRemoveFavoriteMap = () => {
+  const { accessToken } = useAuth();
+  const removeFavoriteMap = async (mapId) => {
+    const options = {
+      headers: {
+        "X-Authorization": accessToken,
+      },
+    };
+
+    try {
+      const response = await request.get(
+        `${baseUrl}/${mapId}/favourite/remove`,
+        options
+      );
+      return response;
+    } catch (error) {
+      console.error("❌ Error unsubscribing from map:", error);
+      throw error;
+    }
+  };
+
+  return removeFavoriteMap;
+};
+
+export const getFavoriteMap = async (accessToken) => {
+  if (!accessToken) {
+    console.error("❌ Error: No access token provided.");
+    throw new Error("No access token provided");
+  }
+
+  const options = {
+    headers: {
+      "X-Authorization": accessToken,
+    },
+  };
+
+  try {
+    const response = await request.get(`${profileUrl}/favourite`, options);
+    return response;
+  } catch (error) {
+    console.error("❌ Error fetching wishlist:", error);
+    throw error;
+  }
+};
+
+export const useFavoriteMap = () => {
+  const { accessToken } = useAuth();
+  const favoriteMap = async (mapId) => {
+    const options = {
+      headers: {
+        "X-Authorization": accessToken,
+      },
+    };
+
+    try {
+      const response = await request.get(
+        `${baseUrl}/${mapId}/favourite/add`,
+        options
+      );
+      return response;
+    } catch (error) {
+      console.error("❌ Error:", error);
+      throw error;
+    }
+  };
+
+  return favoriteMap;
+};
+
+//like
 export const getLikeListMap = async (accessToken) => {
   if (!accessToken) {
     console.error("❌ Error: No access token provided.");

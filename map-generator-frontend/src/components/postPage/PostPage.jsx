@@ -2,10 +2,13 @@ import { Link, useNavigate, useParams } from "react-router";
 import "./PostPage.css";
 import useAuth from "../../hooks/useAuth";
 import {
+  getFavoriteMap,
   getLikeListMap,
   getMap,
   useDeleteMap,
+  useFavoriteMap,
   useLikeMap,
+  useRemoveFavoriteMap,
   useUnlikeMap,
 } from "../../api/mapApi";
 import { postComment, deleteComment } from "../../api/mapApi";
@@ -19,13 +22,16 @@ export default function PostPage() {
   const deleteMap = useDeleteMap();
   const likeMap = useLikeMap();
   const unlikeMap = useUnlikeMap();
+  const removeFavoriteMap = useRemoveFavoriteMap();
+  const favoriteMap = useFavoriteMap();
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [isEntering, setIsEntering] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(map?.likes || []);
-  const [favouriteList, setFavouriteList] = useState([]);
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [favourites, setFavourites] = useState(map?.favourites || []);
 
   //animation effect
   useEffect(() => {
@@ -33,12 +39,56 @@ export default function PostPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // likes set
+  // like set
   useEffect(() => {
-    if (map?.likes) {
-      setLikes(map.likes);
-    }
-  }, [map]);
+    const checkIfLiked = async () => {
+      if (isAuthenticated && accessToken) {
+        try {
+          const response = await getLikeListMap(accessToken);
+
+          if (Array.isArray(response)) {
+            const isInLikeList = response.some((item) => item._id === mapId);
+            setIsLiked(isInLikeList);
+          } else {
+            console.error(
+              "Expected response to be an array, but got:",
+              response
+            );
+          }
+        } catch (error) {
+          console.error("Error checking if pet is in wishlist", error);
+        }
+      }
+    };
+
+    checkIfLiked();
+  }, [mapId, isAuthenticated, accessToken]);
+
+  useEffect(() => {
+    const checkIfFavourite = async () => {
+      if (isAuthenticated && accessToken) {
+        try {
+          const response = await getFavoriteMap(accessToken);
+
+          if (Array.isArray(response)) {
+            const isInFavouriteList = response.some(
+              (item) => item._id === mapId
+            );
+            setIsFavourite(isInFavouriteList);
+          } else {
+            console.error(
+              "Expected response to be an array, but got:",
+              response
+            );
+          }
+        } catch (error) {
+          console.error("Error checking if pet is in wishlist", error);
+        }
+      }
+    };
+
+    checkIfFavourite();
+  }, [mapId, isAuthenticated, accessToken]);
 
   //comments set
   useEffect(() => {
@@ -70,43 +120,55 @@ export default function PostPage() {
   };
 
   //like functionality
-  useEffect(() => {
-    const checkIfLiked = async () => {
-      if (isAuthenticated && accessToken) {
-        try {
-          const response = await getLikeListMap(accessToken);
-
-          if (Array.isArray(response)) {
-            const isInLikeList = response.some((m) => m._id === mapId);
-            setIsLiked(isInLikeList);
-          } else {
-            console.error(
-              "Expected response to be an array, but got:",
-              response
-            );
-          }
-        } catch (error) {
-          console.error("Error checking if map is in like list", error);
-        }
-      }
-    };
-
-    checkIfLiked();
-  }, [mapId, isAuthenticated, accessToken]);
 
   const mapLikeListHandler = async () => {
-    await likeMap(mapId);
-    setIsLiked(true);
-    setLikes([...likes, { _id: userId }]);
+    try {
+      const res = await likeMap(mapId);
+      if (res && res.likes) {
+        setLikes(res.likes);
+        setIsLiked(true);
+      } else {
+        console.warn("Unexpected like response", res);
+      }
+    } catch (err) {
+      console.error("Error liking map:", err);
+    }
   };
 
   const mapUnlikeHandler = async () => {
-    await unlikeMap(mapId);
-    setIsLiked(false);
-    setLikes(likes.filter((l) => l._id !== userId));
+    try {
+      const res = await unlikeMap(mapId);
+      if (res && res.likes) {
+        setLikes(res.likes);
+        setIsLiked(false);
+      } else {
+        console.warn("Unexpected unlike response", res);
+      }
+    } catch (err) {
+      console.error("Error unliking map:", err);
+    }
   };
 
   //favorite functionality
+  const handleAddFavourite = async () => {
+    try {
+      const updated = await favoriteMap(mapId);
+      setFavourites(updated.favourites);
+      setIsFavourite(true);
+    } catch (err) {
+      console.error("Error adding favourite:", err);
+    }
+  };
+
+  const handleRemoveFavourite = async () => {
+    try {
+      const updated = await removeFavoriteMap(mapId);
+      setFavourites(updated.favourites);
+      setIsFavourite(false);
+    } catch (err) {
+      console.error("Error removing favourite:", err);
+    }
+  };
 
   //owner - edit and delete
 
@@ -165,7 +227,13 @@ export default function PostPage() {
                 💔 Unlike ({likes.length})
               </button>
             )}
-            <button>⭐ Add to Favourites</button>
+            {!isFavourite ? (
+              <button onClick={handleAddFavourite}>⭐ Add to Favorites</button>
+            ) : (
+              <button onClick={handleRemoveFavourite}>
+                ⭐ Remove from Favorites
+              </button>
+            )}
             <button>💬 Comment</button>
             <button>⬇ Download</button>
           </>

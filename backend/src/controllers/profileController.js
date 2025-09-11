@@ -13,6 +13,21 @@ profileController.get("/posts", isAuth, async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     console.error(err.message);
+    console.log(err.message);
+
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//get the user's favourite list
+profileController.get("/favourite", isAuth, async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const user = await authService.getFavouriteList(userId);
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 });

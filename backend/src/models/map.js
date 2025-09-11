@@ -69,6 +69,13 @@ const productSchema = new Schema(
       },
     ],
 
+    favourites: [
+      {
+        type: Types.ObjectId,
+        ref: "Likes",
+      },
+    ],
+
     owner: {
       type: Types.ObjectId,
       ref: "User",

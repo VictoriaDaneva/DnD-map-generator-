@@ -5,15 +5,28 @@ import { isAuth } from "../middleware/authMiddleware.js";
 
 const mapsController = Router();
 
-//Remove from likes
-mapsController.get("/:id/like/unsub", isOwner, async (req, res) => {
+// Add to favorite
+mapsController.get("/:id/favourite/add", isOwner, async (req, res) => {
   const productId = req.params.id;
   const userId = req.user._id;
-
   try {
-    await mapsService.unlike(productId, userId);
-    await mapsService.removeLikeUser(productId, userId);
-    res.status(200).json({ message: "Product is unliked successfully" });
+    const updatedProduct = await mapsService.favourite(productId, userId);
+    await mapsService.addToFavouriteUser(productId, userId);
+    return res.status(200).json({ favourites: updatedProduct.favourites });
+  } catch (err) {
+    const error = getErrrorMessage(err);
+    return res.status(400).json({ message: error });
+  }
+});
+
+// Remove from favorite
+mapsController.get("/:id/favourite/remove", isOwner, async (req, res) => {
+  const productId = req.params.id;
+  const userId = req.user._id;
+  try {
+    const updatedProduct = await mapsService.unFavourite(productId, userId);
+    await mapsService.removeFavouriteUser(productId, userId);
+    return res.status(200).json({ favourites: updatedProduct.favourites });
   } catch (err) {
     const error = getErrrorMessage(err);
     return res.status(400).json({ message: error });
@@ -24,10 +37,26 @@ mapsController.get("/:id/like/unsub", isOwner, async (req, res) => {
 mapsController.get("/:id/like", isOwner, async (req, res) => {
   const productId = req.params.id;
   const userId = req.user._id;
+
   try {
-    await mapsService.like(productId, userId);
-    const isLiked = await mapsService.addToLikeUser(productId, userId);
-    res.status(200).json({ isLiked });
+    const updatedProduct = await mapsService.like(productId, userId);
+    await mapsService.addToLikeUser(productId, userId);
+    return res.status(200).json({ likes: updatedProduct.likes });
+  } catch (err) {
+    const error = getErrrorMessage(err);
+    return res.status(400).json({ message: error });
+  }
+});
+
+//Remove from likes
+mapsController.get("/:id/like/unsub", isOwner, async (req, res) => {
+  const productId = req.params.id;
+  const userId = req.user._id;
+
+  try {
+    const updatedProduct = await mapsService.unlike(productId, userId);
+    await mapsService.removeLikeUser(productId, userId);
+    return res.status(200).json({ likes: updatedProduct.likes });
   } catch (err) {
     const error = getErrrorMessage(err);
     return res.status(400).json({ message: error });
