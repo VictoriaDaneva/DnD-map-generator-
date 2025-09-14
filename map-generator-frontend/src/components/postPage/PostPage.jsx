@@ -18,7 +18,6 @@ export default function PostPage() {
   const navigate = useNavigate();
   const { userId, isAuthenticated, accessToken } = useAuth();
   const { mapId } = useParams();
-  const { map } = getMap(mapId);
   const deleteMap = useDeleteMap();
   const likeMap = useLikeMap();
   const unlikeMap = useUnlikeMap();
@@ -29,15 +28,40 @@ export default function PostPage() {
   const [newComment, setNewComment] = useState("");
   const [isEntering, setIsEntering] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(map?.likes || []);
   const [isFavourite, setIsFavourite] = useState(false);
-  const [favourites, setFavourites] = useState(map?.favourites || []);
+
+  const [map, setMap] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   //animation effect
   useEffect(() => {
-    const timer = setTimeout(() => setIsEntering(false), 30);
-    return () => clearTimeout(timer);
+    let raf = requestAnimationFrame(() => {
+      // small delay gives the browser time to paint the overlay at opacity:1
+      const t = setTimeout(() => setIsEntering(false), 20);
+      // cleanup
+      return () => clearTimeout(t);
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
+
+  //fetching map
+  useEffect(() => {
+    const fetchMap = async () => {
+      try {
+        const data = await getMap(mapId, accessToken); // async call
+        setMap(data);
+      } catch (err) {
+        console.error("❌ Failed to fetch map:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMap();
+  }, [mapId, accessToken]);
+
+  const [favourites, setFavourites] = useState(map?.favourites || []);
+  const [likes, setLikes] = useState(map?.likes || []);
 
   // like set
   useEffect(() => {
@@ -183,112 +207,124 @@ export default function PostPage() {
   };
   return (
     <div className="post-page">
-      <div className="post-image-container">
-        <img src={map.image} alt={map.title} className="background-image" />
-
-        {map.items?.map((item) => {
-          const originalWidth = 800;
-          const originalHeight = 600;
-
-          return (
-            <img
-              key={item._id}
-              src={`/${item.name}.png`}
-              alt={item.name}
-              className="map-item"
-              style={{
-                left: `${(item.x / originalWidth) * 100}%`,
-                top: `${(item.y / originalHeight) * 100}%`,
-                width: `${(item.size / originalWidth) * 100}%`,
-                transform: `rotate(${item.rotation}deg)`,
-              }}
-            />
-          );
-        })}
-      </div>
-      <div className="actions">
-        {isOwner ? (
-          <>
-            <Link to={`/map/${mapId}/edit`}>
-              <button className="edit-button">Edit</button>
-            </Link>
-            <button onClick={mapDeleteHandler} className="delete-button">
-              Delete
-            </button>
-          </>
-        ) : isAuthenticated ? (
-          <>
-            {!isLiked ? (
-              <button onClick={mapLikeListHandler} className="like-button">
-                ❤️ Like ({likes.length})
-              </button>
-            ) : (
-              <button onClick={mapUnlikeHandler} className="like-button">
-                💔 Unlike ({likes.length})
-              </button>
-            )}
-            {!isFavourite ? (
-              <button onClick={handleAddFavourite}>⭐ Add to Favorites</button>
-            ) : (
-              <button onClick={handleRemoveFavourite}>
-                ⭐ Remove from Favorites
-              </button>
-            )}
-            <button>💬 Comment</button>
-            <button>⬇ Download</button>
-          </>
-        ) : null}
-      </div>
-
-      <div className="post-info">
-        <h1>{map.title}</h1>
-        <p>
-          by <span className="author">{map.author}</span>
-        </p>
-        <p className="meta">
-          Published: {map.createdAt} | Owned by{" "}
-          <span className="owner">{map.owner?.username}</span>
-        </p>
-      </div>
-
-      <div className="comments">
-        <h2>Comments ({comments?.length})</h2>
-
-        {isAuthenticated && (
-          <div className="comment-input">
-            <textarea
-              placeholder="Write a comment..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <button onClick={handlePostComment}>Post</button>
-          </div>
-        )}
-
-        <div className="comment-list">
-          {comments?.length ? (
-            comments.map((comment) => (
-              <div key={comment._id} className="comment">
-                <div className="comment-user">{comment.user?.username}</div>
-                <div className="comment-date">
-                  {new Date(comment.date).toLocaleDateString()}
-                </div>
-                <p>{comment.text}</p>
-
-                {comment.user?._id === userId && (
-                  <div className="comment-actions">
-                    <button onClick={() => handleDeleteComment(comment._id)}>
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p className="no-comments">No comments yet.</p>
-          )}
+      {loading ? (
+        <div className="loading-wrapper">
+          <p>Loading...</p>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="post-image-container">
+            <img src={map.image} alt={map.title} className="background-image" />
+
+            {map.items?.map((item) => {
+              const originalWidth = 800;
+              const originalHeight = 600;
+
+              return (
+                <img
+                  key={item._id}
+                  src={`/${item.name}.png`}
+                  alt={item.name}
+                  className="map-item"
+                  style={{
+                    left: `${(item.x / originalWidth) * 100}%`,
+                    top: `${(item.y / originalHeight) * 100}%`,
+                    width: `${(item.size / originalWidth) * 100}%`,
+                    transform: `rotate(${item.rotation}deg)`,
+                  }}
+                />
+              );
+            })}
+          </div>
+          <div className="actions">
+            {isOwner ? (
+              <>
+                <Link to={`/map/${mapId}/edit`}>
+                  <button className="edit-button">Edit</button>
+                </Link>
+                <button onClick={mapDeleteHandler} className="delete-button">
+                  Delete
+                </button>
+              </>
+            ) : isAuthenticated ? (
+              <>
+                {!isLiked ? (
+                  <button onClick={mapLikeListHandler} className="like-button">
+                    ❤️ Like ({likes.length})
+                  </button>
+                ) : (
+                  <button onClick={mapUnlikeHandler} className="like-button">
+                    💔 Unlike ({likes.length})
+                  </button>
+                )}
+                {!isFavourite ? (
+                  <button onClick={handleAddFavourite}>
+                    ⭐ Add to Favorites
+                  </button>
+                ) : (
+                  <button onClick={handleRemoveFavourite}>
+                    ⭐ Remove from Favorites
+                  </button>
+                )}
+                <button>💬 Comment</button>
+                <button>⬇ Download</button>
+              </>
+            ) : null}
+          </div>
+
+          <div className="post-info">
+            <h1>{map.title}</h1>
+            <p>
+              by <span className="author">{map.author}</span>
+            </p>
+            <p className="meta">
+              Published: {map.createdAt} | Owned by{" "}
+              <span className="owner">{map.owner?.username}</span>
+            </p>
+          </div>
+
+          <div className="comments">
+            <h2>Comments ({comments?.length})</h2>
+
+            {isAuthenticated && (
+              <div className="comment-input">
+                <textarea
+                  placeholder="Write a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button onClick={handlePostComment}>Post</button>
+              </div>
+            )}
+
+            <div className="comment-list">
+              {comments?.length ? (
+                comments.map((comment) => (
+                  <div key={comment._id} className="comment">
+                    <div className="comment-user">{comment.user?.username}</div>
+                    <div className="comment-date">
+                      {new Date(comment.date).toLocaleDateString()}
+                    </div>
+                    <p>{comment.text}</p>
+
+                    {comment.user?._id === userId && (
+                      <div className="comment-actions">
+                        <button
+                          onClick={() => handleDeleteComment(comment._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="no-comments">No comments yet.</p>
+              )}
+            </div>
+          </div>
+        </>
+      )}
       <div className={`page-fade-in ${isEntering ? "" : "hidden"}`}></div>
     </div>
   );

@@ -5,6 +5,28 @@ import request from "../utils/request";
 const baseUrl = `http://localhost:8080/api/products`;
 const profileUrl = `http://localhost:8080/api/users/profile`;
 
+//user's posts
+export const getUserMaps = async (accessToken) => {
+  if (!accessToken) {
+    console.error("❌ Error: No access token provided.");
+    throw new Error("No access token provided");
+  }
+
+  const options = {
+    headers: {
+      "X-Authorization": accessToken,
+    },
+  };
+
+  try {
+    const response = await request.get(`${profileUrl}/posts`, options);
+    return response;
+  } catch (error) {
+    console.error("❌ Error fetching wishlist:", error);
+    throw error;
+  }
+};
+
 //favourite
 
 export const useRemoveFavoriteMap = () => {
@@ -219,19 +241,18 @@ export const createMap = async (mapData, accessToken) => {
   }
 };
 
-export const getMap = (mapId) => {
-  const { accessToken } = useAuth();
-  const [map, setMap] = useState({});
+export const getMap = async (mapId, accessToken) => {
+  const options = accessToken
+    ? { headers: { "X-Authorization": accessToken } }
+    : {};
 
-  useEffect(() => {
-    const options = accessToken
-      ? { headers: { "X-Authorization": accessToken } }
-      : {};
-
-    request.get(`${baseUrl}/${mapId}`, options).then(setMap);
-  }, [mapId, accessToken]);
-
-  return { map };
+  try {
+    const response = await request.get(`${baseUrl}/${mapId}`, options);
+    return response;
+  } catch (error) {
+    console.error("❌ Error fetching map:", error);
+    throw error;
+  }
 };
 
 export const getMaps = async () => {

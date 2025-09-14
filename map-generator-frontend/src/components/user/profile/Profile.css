@@ -140,7 +140,7 @@
 }
 
 .product-card {
-  height: 240px;
+  height: 210px;
   max-width: 250px;
   background: linear-gradient(
     180deg,
@@ -170,7 +170,8 @@
   font-size: 1.15rem;
   font-weight: 600;
   color: #a86aff;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
+  margin-top: 7px;
 }
 
 .details-link {
@@ -183,7 +184,6 @@
 }
 
 .details-link:hover {
-  text-decoration: underline;
   color: #a86aff;
 }
 
@@ -202,4 +202,22 @@
 
 .page-fade-in.hidden {
   opacity: 0;
+}
+
+.map-preview-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.map-preview-image {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.map-item-overlay {
+  position: absolute;
+  pointer-events: none;
 }
