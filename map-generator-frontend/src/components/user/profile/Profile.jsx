@@ -147,7 +147,7 @@ export default function Profile() {
                     </div>
 
                     <p className="product-name">{map.title}</p>
-                    <Link to={`/maps/${map._id}`} className="details-link">
+                    <Link to={`/posts/${map._id}`} className="details-link">
                       View Details
                     </Link>
                   </div>

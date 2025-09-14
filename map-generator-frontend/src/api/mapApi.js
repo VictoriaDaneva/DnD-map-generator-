@@ -213,7 +213,7 @@ export const useDeleteMap = () => {
   return deleteMap;
 };
 
-export const editPet = async (petId, updatedData, accessToken) => {
+export const editMap = async (mapId, updatedData, accessToken) => {
   try {
     const options = {
       headers: {
@@ -221,9 +221,9 @@ export const editPet = async (petId, updatedData, accessToken) => {
       },
     };
 
-    return await request.put(`${baseUrl}/${petId}/edit`, updatedData, options);
+    return await request.put(`${baseUrl}/${mapId}/edit`, updatedData, options);
   } catch (error) {
-    console.error("Error updating pet:", error);
+    console.error("Error updating map:", error);
     throw error;
   }
 };
