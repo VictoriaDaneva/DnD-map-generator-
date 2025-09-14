@@ -16,6 +16,7 @@ import GuestGuard from "./guards/GuestRouter";
 import AuthGuard from "./guards/AuthGuard";
 import Logout from "./components/user/logout/Logout";
 import EditProfile from "./components/user/editProfile/EditProfile";
+import MapEditor from "./components/editPost/postMap/EditPost";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/biomes/desert" element={<Desert />} />
           <Route path="/biomes/tundra" element={<Tundra />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/posts/:mapId/edit" element={<MapEditor />} />
         </Route>
 
         <Route element={<GuestGuard />}>

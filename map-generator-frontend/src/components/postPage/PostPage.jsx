@@ -239,7 +239,7 @@ export default function PostPage() {
           <div className="actions">
             {isOwner ? (
               <>
-                <Link to={`/map/${mapId}/edit`}>
+                <Link to={`/posts/${mapId}/edit`}>
                   <button className="edit-button">Edit</button>
                 </Link>
                 <button onClick={mapDeleteHandler} className="delete-button">
