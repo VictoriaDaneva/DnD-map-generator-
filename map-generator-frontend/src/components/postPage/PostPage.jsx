@@ -36,9 +36,7 @@ export default function PostPage() {
   //animation effect
   useEffect(() => {
     let raf = requestAnimationFrame(() => {
-      // small delay gives the browser time to paint the overlay at opacity:1
       const t = setTimeout(() => setIsEntering(false), 20);
-      // cleanup
       return () => clearTimeout(t);
     });
     return () => cancelAnimationFrame(raf);
@@ -48,7 +46,7 @@ export default function PostPage() {
   useEffect(() => {
     const fetchMap = async () => {
       try {
-        const data = await getMap(mapId, accessToken); // async call
+        const data = await getMap(mapId, accessToken);
         setMap(data);
       } catch (err) {
         console.error("❌ Failed to fetch map:", err);
