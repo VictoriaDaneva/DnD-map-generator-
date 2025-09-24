@@ -62,7 +62,7 @@ The app provides both **guest access** and **registered user accounts**, allowin
 ---
 
 ## 📂 Project Structure  
-
+```
 dnd-map-generator/
 │
 ├── map-generator-frontend/
@@ -96,6 +96,7 @@ dnd-map-generator/
 ├── .gitignore
 ├── README.md
 └── LICENSE
+```
 ---
 ---
 
@@ -148,7 +149,7 @@ npm start
 ---
 
 ## 🌍 API Endpoints
-
+```
 ## Method	     Endpoint	              Description
 
 POST	       /api/auth/register	    Register new user
@@ -162,3 +163,4 @@ POST	       /api/maps/:id/like	    Like a map
 POST         /api/maps/:id/fav	    Favorite a map
 POST	       /api/maps/:id/comment	Leave a comment
 GET	         /api/users/:id        	Get user profile (maps + favorites)
+```
