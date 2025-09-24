@@ -150,7 +150,7 @@ npm start
 
 ## 🌍 API Endpoints
 ```
-## Method	     Endpoint	              Description
+Method	     Endpoint	              Description
 
 POST	       /api/auth/register	    Register new user
 POST	       /api/auth/login	      Login existing user
