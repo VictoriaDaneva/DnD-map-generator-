@@ -13,6 +13,10 @@ import {
 } from "../../api/mapApi";
 import { postComment, deleteComment } from "../../api/mapApi";
 import { useEffect, useState } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+import Loader from "./loader/Loader";
 
 export default function PostPage() {
   const navigate = useNavigate();
@@ -45,13 +49,20 @@ export default function PostPage() {
   //fetching map
   useEffect(() => {
     const fetchMap = async () => {
+      setLoading(true);
+
+      const startTime = Date.now();
       try {
         const data = await getMap(mapId, accessToken);
         setMap(data);
       } catch (err) {
-        console.error("❌ Failed to fetch map:", err);
+        console.error(" Failed to fetch map:", err);
       } finally {
-        setLoading(false);
+        const elapsed = Date.now() - startTime;
+        const minDuration = 400;
+        const delay = Math.max(0, minDuration - elapsed);
+
+        setTimeout(() => setLoading(false), delay);
       }
     };
 
@@ -120,8 +131,8 @@ export default function PostPage() {
   }, [map]);
 
   //loader
-  if (!map) {
-    return <p>Loading...</p>;
+  if (loading) {
+    return <Loader />;
   }
 
   //comments functionality
@@ -203,6 +214,38 @@ export default function PostPage() {
     await deleteMap(mapId);
     navigate("/posts");
   };
+
+  //download functionality
+  const handleDownloadPDF = async () => {
+    const element = document.querySelector(".post-image-container");
+
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element, { scale: 3 });
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF("landscape", "pt", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+
+      const finalWidth = imgWidth * ratio;
+      const finalHeight = imgHeight * ratio;
+
+      const x = (pdfWidth - finalWidth) / 2;
+      const y = (pdfHeight - finalHeight) / 2;
+
+      pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+      pdf.save(`${map.title || "map"}.pdf`);
+    } catch (err) {
+      console.error("❌ PDF download failed:", err);
+    }
+  };
+
   return (
     <div className="post-page">
       {loading ? (
@@ -265,7 +308,7 @@ export default function PostPage() {
                   </button>
                 )}
                 <button>💬 Comment</button>
-                <button>⬇ Download</button>
+                <button onClick={handleDownloadPDF}>⬇ Download</button>
               </>
             ) : null}
           </div>
